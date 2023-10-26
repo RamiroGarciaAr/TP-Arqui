@@ -3,8 +3,7 @@
 
 #include <color.h>
 
-typedef struct player
-{
+typedef struct player{
     int points; //amount of apples eaten
     bool isAlive; 
     
@@ -17,6 +16,6 @@ typedef struct player
     Color color;
 
 
-}
+}Player;
 
 #endif
