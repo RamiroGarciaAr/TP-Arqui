@@ -14,8 +14,6 @@ typedef struct player{
     int initialSize; //start of the starting snake
 
     Color color;
-
-
 }Player;
 
 #endif
