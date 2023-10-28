@@ -30,5 +30,7 @@ void printint(uint64_t value);
 int strtok(char * s, char delim, char * array[], int arraySize);
 int strlen(char * s);
 int strcmp(char * s1, char * s2);
+int getRandomInBetween(int max,int min);
+int getRandom();
 
 #endif //UTILS_H

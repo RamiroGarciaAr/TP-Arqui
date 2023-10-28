@@ -146,6 +146,19 @@ int pow(int base, unsigned int exp){
     return ans;
 }
 
+int getRandomInBetween(int max,int min)
+{
+    if (max < min) return -1;
+   return getRandom() % (max+1-min) + min;
+}
+
+int getRandom()
+{
+    uint64_t aux = sysGetTime();
+    aux = ((aux*aux)/100)%1000;
+    return aux;
+
+}
 
 void getTime(char * timeBuff) {
     char * p = timeBuff;

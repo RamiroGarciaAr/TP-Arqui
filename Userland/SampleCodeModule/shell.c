@@ -3,6 +3,7 @@
 #include <stdint.h>
 #include <testExceptions.h>
 #include <pong.h>
+#include <snake.h>
 
 #define EXIT_KEY 27
 #define REGS_KEY 29
@@ -116,7 +117,11 @@ static void decodeInput(char * input){
     }
     for(int i = 0; i < instructionsCounter; i++) {
         //si coincide el nombre de la funcion la llamo
-        if (strcmp(instructions[i].name, *inputBuffer)) {
+        if (strcmp(instructions[i].name, *inputBuffer)) 
+        {
+            printf("You are accesing: ",red);
+            printf(instructions[i].name,green);
+            putchar('\n');
             instructions[i].function();
             return;
         }
@@ -138,12 +143,15 @@ static void setInstructions(){
     //seteamos todas las funciones que se pueden llamar desde la shell
     setNewInstruction(&start_game, "pong", "                   starts the game \'pong\' in full-screen, to close the game press ESC, the keys to control de padles are:\
                                                           Player1: UP: \'w\' | DOWN: \'s\' || Player2: UP: \'i\' | DOWN: \'k\'");
+    
+    setNewInstruction(&start_snake, "snake", "            runs snake");
     setNewInstruction(&testException0,  "generateException0", "     runs a test to show the exceptionHandler for exception0: zerodivision");
     setNewInstruction(&testException6,  "generateException6", "     runs a test to show the exceptionHandler for exception6: invalidop");
     setNewInstruction(&printRegisters,  "printRegisters", "         before using this function please press CTRL to save the contents from the registers at that moment,\
                                                           then use this instruction to obtain their values");
     setNewInstruction(&printCurrentTime,"printTime", "              prints the current time, using the format: HH:MM:SS");
     setNewInstruction(&help,"help", "                   prints the whole set of instructions available to you with a short description of them");
+
 }
 
 static void help(){
