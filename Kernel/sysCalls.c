@@ -103,9 +103,19 @@ uint64_t drawVideoChar(char character, uint32_t color, uint64_t x, uint64_t y, u
     drawCustomCharBack(character, convertHexatoColor(color), x, y, size);
     return 0;
 }
+
+uint64_t getPtrToPixel(uint64_t x, uint64_t y, uint32_t color, uint64_t empty4, uint64_t empty5){
+    Color *c = (Color *) color;
+    Color *screenPixel = (Color *) videoGetPtrToPixel(x,y);
+    c->b = screenPixel->b;
+    c->r = screenPixel->r;
+    c->g = screenPixel->g;
+    return 0;
+}
+
 //se estandariza el prototipo de las funciones que atienden system calls a 5 parametros
 static uint64_t (*syscalls[])(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t r10, uint64_t r8) =
-        {read, readCharFromBuffer, write,customWrite, setCursorPosition,getCurrentTime, getScrWidth, getScrHeight, drawFilledRect, dottedLine, videoRefresh, clearScreen, playBeep, drawVideoChar};
+        {read, readCharFromBuffer, write,customWrite, setCursorPosition,getCurrentTime, getScrWidth, getScrHeight, drawFilledRect, dottedLine, videoRefresh, clearScreen, playBeep, drawVideoChar, getPtrToPixel};
 
 uint64_t syscallHandler(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t r10, uint64_t r8, uint64_t r9) {
     if (r9 < (sizeof(syscalls)/sizeof(syscalls[0])) && syscalls[r9] != 0) {

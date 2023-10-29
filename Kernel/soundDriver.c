@@ -41,7 +41,7 @@ void wait(uint32_t millis) {
 
 //Make a beep
 void beep() {
-	 play_sound(1000);
+	 play_sound(500);
 	 wait(10);
 	 nosound();
      //set_PIT_2(old_frequency);

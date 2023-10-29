@@ -14,6 +14,7 @@
 uint32_t whiteColor = 0xFFFFFF;
 uint32_t redColor = 0xFF0000;
 uint32_t blackColor = 0x000000; 
+uint32_t blueColor=	0x0000FF;
 
 Apple apple;
 Player player;
@@ -26,6 +27,7 @@ AxisPoint getRandomPoint();
 static void setup();
 
 void start_snake(){
+    //Beginning the game
     menuScreen();
     sysVideoRefresh();
 
@@ -37,6 +39,14 @@ void start_snake(){
     clearScreen(BACKBUFFER);
     sysVideoRefresh();
 
+
+    //Finishing the game
+    gameOverScreen(checkScore());
+    sysVideoRefresh();
+    char end;
+    while ((end = getchar())!= ' ');
+    clearScreen(BACKBUFFER);
+    sysVideoRefresh();
 }
 
 static void setup()
@@ -49,7 +59,6 @@ static void setup()
     player.playerPos.y = SCREEN_HEIGHT/2;
     player.moveDir = 3; // <--
     player.currentSize = PLAYER_INIT_SIZE;
-    player.height = DOT_SIZE;
     player.color = whiteColor;
 
     //Apple setup
@@ -67,16 +76,20 @@ static int readControls()
     switch (c)
     {
         case 'w':
-            moveUp();
+            if (player.moveDir != 2)
+                moveUp();
             break;
-        case 's'
-            moveDown();
+        case 's':
+            if (player.moveDir != 1)
+                moveDown();
             break;
         case 'd':
-            moveRight();
+            if (player.moveDir != 3)
+                moveRight();
             break;
         case 'a':
-            moveLeft();
+            if (player.moveDir != 4)
+                moveLeft();
             break;
         case ESC:
             clearScreen(BACKBUFFER);
@@ -84,6 +97,7 @@ static int readControls()
             return 0;
     }
 }
+
 
 
 //static void moveUp(){
@@ -121,13 +135,32 @@ static void menuScreen()
 static void drawFrame()
 {
     sysDrawCustomCharBack(player.points +'0',whiteColor, SCREEN_WIDTH/2,50, 6);
-    sysDrawFilledRect(whiteColor,apple.applePos.x, apple.applePos.x, apple.size, apple.size);
+    sysDrawFilledRect(redColor,apple.applePos.x, apple.applePos.x, apple.size, apple.size);
     //se actualiza cada player en front
-    sysDrawFilledRect(whiteColor, player.playerPos.x, player.playerPos.y, player.currentSize, player.height);
+    //sysDrawFilledRect(whiteColor, player.playerPos.x, player.playerPos.y, player.currentSize, player.height);
+    drawSnake();
     sysVideoRefresh(); //se imprime en pantalla
 }
+static void drawSnake()
+{
+    for (int i =0;i<player.currentSize;i++)
+    {
+        sysDrawFilledRect(whiteColor, player.playerPos[i].x, player.playerPos[i].y, DOT_SIZE, DOT_SIZE);
+    }
+}
+static void deleteLast()
+{
+    sysDrawFilledRect(whiteColor, player.playerPos[player.currentSize].x, player.playerPos[player.currentSize].y, DOT_SIZE, DOT_SIZE);
+}
+//checks the color of the nextPixel
+//returns -1 if crashed 0 if all good :) 
+//
+static int validateMovement(int posX, int posY)
+{
+    
+}
 
-/*
+
 static void gameOverScreen()
 {
     sysDrawCustomCharBack('G',whiteColor,SCREEN_WIDTH/2-200,50, 6);
@@ -140,4 +173,66 @@ static void gameOverScreen()
     sysDrawCustomCharBack('E',whiteColor,SCREEN_WIDTH/2,200, 6);
     sysDrawCustomCharBack('R',whiteColor,SCREEN_WIDTH/2+100,200, 6);
 }
-*/
+void changeSnakeSegmentsPos()
+{
+    for(i=player.currentSize;i<1;i--)
+    {
+      array[i]=array[i-1];
+            
+    }
+    
+}
+
+void moveUp()
+{
+    if(validateMovement(player.playerPos[i].x, player.playerPos[i].y + DOT_SIZE) == -1)
+    {
+        gameOverScreen();
+    }
+    changeSnakeSegmentsPos();
+    player.playerPos[0].y=player.playerPos[0].y + DOT_SIZE;
+    sysDrawFilledRect(whiteColor, player.playerPos[0].x, player.playerPos[0].y, DOT_SIZE, DOT_SIZE);
+    deleteLast();
+    
+    player.moveDir = 1;
+
+}
+void moveDown()
+{
+    if(validateMovement(player.playerPos[i].x, player.playerPos[i].y + DOT_SIZE) == -1){
+        gameOverScreen();
+    }
+     changeSnakeSegmentsPos();
+     player.playerPos[0].y=player.playerPos[0].y - DOT_SIZE;
+    sysDrawFilledRect(whiteColor, player.playerPos[0].x, player.playerPos[0].y, DOT_SIZE, DOT_SIZE);
+    deleteLast();
+   
+
+    player.moveDir = 2;
+}
+void moveleft()
+{
+    if(validateMovement(player.playerPos[i].x - DOT_SIZE, player.playerPos[i].y ) == -1){
+        gameOverScreen();
+    }
+    changeSnakeSegmentsPos();
+    player.playerPos[0].x=player.playerPos[0].x - DOT_SIZE;
+    sysDrawFilledRect(whiteColor, player.playerPos[0].x, player.playerPos[0].y, DOT_SIZE, DOT_SIZE);
+    deleteLast();
+    
+
+    player.movDir = 3;
+}
+void moveRight()
+{
+    if(validateMovement(player.playerPos[0].x + DOT_SIZE, player.playerPos[0].y ) == -1){
+        gameOverScreen();
+    }
+    changeSnakeSegmentsPos(); 
+    player.playerPos[0].x=player.playerPos[0].x  + DOT_SIZE;
+    sysDrawFilledRect(whiteColor, player.playerPos[0].x, player.playerPos[0].y, DOT_SIZE, DOT_SIZE);
+    deleteLast();
+    
+    
+    player.movDir = 4;
+}

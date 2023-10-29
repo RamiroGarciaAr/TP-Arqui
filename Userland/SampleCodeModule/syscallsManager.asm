@@ -106,3 +106,5 @@ sysPlayBeep:
 sysDrawCustomCharBack:
     makeSysCall 13
 
+sysGetPtrToPixel:
+	makeSysCall 14

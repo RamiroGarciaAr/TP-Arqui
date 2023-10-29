@@ -30,7 +30,7 @@ uint64_t clearScreen(uint64_t mode, uint64_t empty2, uint64_t empty3, uint64_t e
 uint64_t checkKeyboardActivity(uint64_t empty1, uint64_t empty2, uint64_t empty3, uint64_t empty4, uint64_t empty5);
 uint64_t drawVideoChar(char number, uint32_t color, uint64_t x, uint64_t y, uint64_t size);
 uint64_t readCharFromBuffer(char* buf, uint64_t empty1, uint64_t empty2, uint64_t empty3, uint64_t empty4);
-
+uint64_t getPtrToPixel();
 
 // rax es el indice de acceso al vector estatico de todos los punteros a funcion de todos los handlers de las distintas sysCalls
 uint64_t syscallHandler(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t r10, uint64_t r8, uint64_t rax);

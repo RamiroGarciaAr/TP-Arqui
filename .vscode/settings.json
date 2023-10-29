@@ -1,5 +1,11 @@
 {
     "files.associations": {
-        "pong.h": "c"
+        "pong.h": "c",
+        "syscallsmanager.h": "c",
+        "keyboarddriver.h": "c",
+        "interrupts.h": "c",
+        "clock.h": "c",
+        "sounddriver.h": "c",
+        "syscalls.h": "c"
     }
 }
