@@ -3,10 +3,9 @@
 
 #include <stdint.h>
 
-typedef struct AxisPoint{
+typedef struct axisPoint{
     uint64_t x;
     uint64_t y;
-
 }AxisPoint;
 
 #endif  

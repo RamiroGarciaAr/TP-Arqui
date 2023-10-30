@@ -6,6 +6,9 @@
         "interrupts.h": "c",
         "clock.h": "c",
         "sounddriver.h": "c",
-        "syscalls.h": "c"
+        "syscalls.h": "c",
+        "point.h": "c",
+        "snake.h": "c",
+        "videodriver.h": "c"
     }
 }

@@ -9,13 +9,11 @@
 typedef struct player{
     int points; //amount of apples eaten
     int isAlive; 
+
+    AxisPoint playerPos[MAX_LENGTH] ;
     
-    AxisPoint[MAX_LENGTH] playerPos;
-
     int moveDir; // 1=up , 2=down, 3=left, 4=right
-
     int currentSize; //current Snake size
-
     uint32_t color;
 }Player;
 

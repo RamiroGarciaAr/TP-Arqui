@@ -104,12 +104,10 @@ uint64_t drawVideoChar(char character, uint32_t color, uint64_t x, uint64_t y, u
     return 0;
 }
 
-uint64_t getPtrToPixel(uint64_t x, uint64_t y, uint32_t color, uint64_t empty4, uint64_t empty5){
-    Color *c = (Color *) color;
-    Color *screenPixel = (Color *) videoGetPtrToPixel(x,y);
-    c->b = screenPixel->b;
-    c->r = screenPixel->r;
-    c->g = screenPixel->g;
+uint64_t getPtrToPixel(uint64_t x, uint64_t y, uint32_t* color, uint64_t empty4, uint64_t empty5){
+    uint32_t *c = (uint32_t *) color;
+    uint32_t *screenPixel = (uint32_t *) videoGetPtrToPixel(x,y);
+    c = screenPixel;
     return 0;
 }
 

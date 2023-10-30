@@ -15,6 +15,7 @@ GLOBAL sysDrawFilledRect
 GLOBAL sysVideoRefresh
 GLOBAL sysClearScreen
 GLOBAL sysPlayBeep
+GLOBAL sysGetPtrToPixel
 
 ;no se pushea rax para mantener el valor de retorno
 %macro pushState 0
