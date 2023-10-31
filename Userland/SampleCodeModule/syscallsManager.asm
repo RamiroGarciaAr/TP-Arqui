@@ -16,6 +16,8 @@ GLOBAL sysVideoRefresh
 GLOBAL sysClearScreen
 GLOBAL sysPlayBeep
 GLOBAL sysGetPtrToPixel
+GLOBAL sysZoomIn
+GLOBAL sysZoomOut
 
 ;no se pushea rax para mantener el valor de retorno
 %macro pushState 0
@@ -109,3 +111,9 @@ sysDrawCustomCharBack:
 
 sysGetPtrToPixel:
 	makeSysCall 14
+
+sysZoomIn:
+	makeSysCall 15
+
+sysZoomOut:
+	makeSysCall 16
