@@ -49,6 +49,17 @@ VBEInfoPtr VBE_mode_info = (VBEInfoPtr) 0x0000000000005C00;
 Color drawingColor = {0xFF,0xFF,0xFF};
 Color backgroundColor = {0x00, 0x00, 0x00};
 
+
+uint32_t size = DEFAULT_FONT_SIZE;
+
+void setFontSize(uint32_t newSize)
+{
+    size = newSize;
+}
+uint32_t getFontSize()
+{
+    return size;
+}
 //double buffer
 uint8_t backBuffer[BUFFER_HEIGHT * BUFFER_WIDTH * 3] = {0x00};
 

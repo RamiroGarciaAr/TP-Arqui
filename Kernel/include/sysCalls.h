@@ -15,6 +15,8 @@
 #define DRAW 2
 //color en hexa para imprimir en la shell
 #define DEFAULTCOLOR 0xFFFFFF
+#define ZOOM_RATE 5
+
 
 uint64_t write(uint64_t fd, const char * buf, uint64_t len, uint64_t empty1, uint64_t empty2); // me retorna len
 uint64_t customWrite(uint64_t fd, const char* buf, uint32_t color, uint64_t len, uint64_t empty1); // me retorna la posicion actual de la pen
@@ -31,6 +33,8 @@ uint64_t checkKeyboardActivity(uint64_t empty1, uint64_t empty2, uint64_t empty3
 uint64_t drawVideoChar(char number, uint32_t color, uint64_t x, uint64_t y, uint64_t size);
 uint64_t readCharFromBuffer(char* buf, uint64_t empty1, uint64_t empty2, uint64_t empty3, uint64_t empty4);
 uint64_t getPtrToPixel(uint64_t x, uint64_t y, uint32_t* color, uint64_t empty4, uint64_t empty5);
+uint64_t zoomIn(uint64_t empty1, uint64_t empty2, uint64_t empty3, uint64_t empty4, uint64_t empty5);
+uint64_t zoomOut(uint64_t empty1, uint64_t empty2, uint64_t empty3, uint64_t empty4, uint64_t empty5);
 
 // rax es el indice de acceso al vector estatico de todos los punteros a funcion de todos los handlers de las distintas sysCalls
 uint64_t syscallHandler(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t r10, uint64_t r8, uint64_t rax);

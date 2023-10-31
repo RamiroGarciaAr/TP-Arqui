@@ -12,6 +12,13 @@
 #define CHAR_WIDTH 8
 #define CHAR_HEIGHT 16
 
+#define DEFAULT_FONT_SIZE 2
+
+//setter para poder cambiar el tamaño del font
+void setFontSize(uint32_t newSize);
+
+//getter para el tamaño de la Font
+uint32_t getFontSize();
 //funciones para dibujar un pixel de color usando el frameBuffer (Front) y el backBuffer (Back)
 void drawPixelFront(Color color, uint32_t x, uint32_t y);
 void drawPixelBack(Color color, uint32_t x, uint32_t y);

@@ -110,7 +110,16 @@ uint64_t getPtrToPixel(uint64_t x, uint64_t y, uint32_t* color, uint64_t empty4,
     c = screenPixel;
     return 0;
 }
-
+uint64_t zoomIn(uint64_t empty1, uint64_t empty2, uint64_t empty3, uint64_t empty4, uint64_t empty5)
+{
+    setFontSize(getFontSize()+ZOOM_RATE);
+    return 0;
+}
+uint64_t zoomOut(uint64_t empty1, uint64_t empty2, uint64_t empty3, uint64_t empty4, uint64_t empty5)
+{
+    setFontSize(getFontSize()-ZOOM_RATE);
+    return 0;
+}
 //se estandariza el prototipo de las funciones que atienden system calls a 5 parametros
 static uint64_t (*syscalls[])(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t r10, uint64_t r8) =
         {read, readCharFromBuffer, write,customWrite, setCursorPosition,getCurrentTime, getScrWidth, getScrHeight, drawFilledRect, dottedLine, videoRefresh, clearScreen, playBeep, drawVideoChar, getPtrToPixel};

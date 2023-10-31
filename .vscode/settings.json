@@ -10,5 +10,6 @@
         "point.h": "c",
         "snake.h": "c",
         "videodriver.h": "c"
-    }
+    },
+    "C_Cpp.default.compilerPath": ""
 }
