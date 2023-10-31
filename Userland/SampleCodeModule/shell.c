@@ -4,7 +4,8 @@
 #include <testExceptions.h>
 #include <pong.h>
 #include <snake.h>
-#include <sysCalls.h>
+#include <syscallsManager.h>
+
 
 #define EXIT_KEY 27
 #define REGS_KEY 29
@@ -152,8 +153,8 @@ static void setInstructions(){
                                                           then use this instruction to obtain their values");
     setNewInstruction(&printCurrentTime,"printTime", "              prints the current time, using the format: HH:MM:SS");
     setNewInstruction(&help,"help", "                   prints the whole set of instructions available to you with a short description of them");
-    setNewInstruction(&zoomIn,"Zoom In","               Zooms into the Screen");
-    setNewInstruction(&zoomOut,"Zoom Out","              Zooms out of the Screen");
+    setNewInstruction(&sysZoomIn,"Zoom In","               Zooms into the Screen");
+    setNewInstruction(&sysZoomOut,"Zoom Out","              Zooms out of the Screen");
 
 
 }
