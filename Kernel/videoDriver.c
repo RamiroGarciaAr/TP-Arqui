@@ -3,6 +3,8 @@
 #include <stdint.h>
 #include <chars.h>
 
+#include "include/font.h"
+
 struct vbe_mode_info_structure {
 	uint16_t attributes;		// deprecated, only bit 7 should be of interest to you, and it indicates the mode supports a linear frame buffer.
 	uint8_t window_a;			// deprecated
@@ -49,8 +51,11 @@ VBEInfoPtr VBE_mode_info = (VBEInfoPtr) 0x0000000000005C00;
 Color drawingColor = {0xFF,0xFF,0xFF};
 Color backgroundColor = {0x00, 0x00, 0x00};
 
+uint32_t cursorX =0;
+uint32_t cursorY =0;
 
 uint32_t size = DEFAULT_FONT_SIZE;
+
 
 void setFontSize(uint32_t newSize)
 {
@@ -214,3 +219,51 @@ void* videoGetPtrToPixel(uint64_t x, uint64_t y) {
     */
     return (void*)(VBE_mode_info->framebuffer + VBE_mode_info->bpp * (x + (y * (uint64_t)VBE_mode_info->width)));
 }
+
+/// New char system
+/*
+void drawChar(uint64_t hexColor, char character)
+{
+    int a = cursorX;
+    int x = a;
+    int y = cursorY;
+    int start = character - 33;
+
+    if (character == ' ') return; // si es un espacio no dibuja nada
+    if (isMinusc(character))
+    {
+        start = character - 'a';
+    }
+    for(int i =0; i<32;i++)
+    {
+        if (i%2==0 && i !=0)
+        {
+            y+=size; // Salto a la siguiente fila de píxeles
+            a=x; // Reinicia la posición horizontal al inicio
+        }
+
+
+    }
+}
+
+void character(uint64_t hexColor, char c)
+{
+    //Special Chaaracters
+    manageSpecialCharacter(c);
+    //Screen Limits
+    if (cursorX >= getScreenWidth())
+    {
+        cursorX=0;
+        cursorY += size*16;
+    }
+    if (cursorY >= getScreenHeight())
+    {
+        cursorX =0;
+        moveOneLineUp();
+    }
+    //Draw Character
+    drawChar(hexColor,c);
+    cursorX += size*8;
+    return;
+}
+*/

@@ -40,29 +40,25 @@ void start_snake(){
     setup();
     int input;
     //EXECUTE GAME
-    while (player.isAlive)
+    while (player.isAlive != 0)
     {
         drawFrame();
         clearScreen(BACKBUFFER);
         input = readControls();
-        move();
         if(!input)
         {
             return;
         }
+        move();
     }
     clearScreen(BACKBUFFER);
     //YOU LOST :C
     gameOverScreen();
     sysVideoRefresh();
 
-
-    sysVideoRefresh();
     char end;
     while ((end = getchar())!= ' ');
     clearScreen(BACKBUFFER);
-    drawFrame();
-    
     sysVideoRefresh();
 }
 

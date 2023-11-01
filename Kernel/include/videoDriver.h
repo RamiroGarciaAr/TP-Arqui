@@ -12,6 +12,8 @@
 #define CHAR_WIDTH 8
 #define CHAR_HEIGHT 16
 
+#define isMinusc(x) ((x)<='a'?(((x)>='z')?1:0):0)
+
 #define DEFAULT_FONT_SIZE 2
 
 //setter para poder cambiar el tamaño del font
