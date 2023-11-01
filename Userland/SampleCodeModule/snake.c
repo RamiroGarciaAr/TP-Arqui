@@ -34,32 +34,32 @@ void start_snake(){
     //Beginning the game
     menuScreen();
     sysVideoRefresh();
-
     char c;
     while((c = getchar()) != ' ');
     setup();
     int input;
+
     //EXECUTE GAME
     while (player.isAlive != 0)
     {
         drawFrame();
         clearScreen(BACKBUFFER);
         input = readControls();
-        if(!input)
-        {
-            return;
-        }
         move();
+        validateMovement();
     }
-    clearScreen(BACKBUFFER);
-    //YOU LOST :C
-    gameOverScreen();
-    sysVideoRefresh();
+    
+    if(player.isAlive == 0){
+        clearScreen(BACKBUFFER);
+        //YOU LOST :C
+        gameOverScreen();
+        sysVideoRefresh();
 
-    char end;
-    while ((end = getchar())!= ' ');
-    clearScreen(BACKBUFFER);
-    sysVideoRefresh();
+        char end;
+        while ((end = getchar())!= ' ');
+        clearScreen(BACKBUFFER);
+        sysVideoRefresh();
+    }
 }
 
 static void setup()
@@ -210,7 +210,7 @@ static void moveUp()
     if(validateMovement(player.playerPos[0].x, player.playerPos[0].y + DOT_SIZE) != 0)
         player.isAlive = 0;
     changeSnakeSegmentsPos();
-    player.playerPos[0].y=player.playerPos[0].y + DOT_SIZE;
+    player.playerPos[0].y=player.playerPos[0].y - DOT_SIZE;
     sysDrawFilledRect(whiteColor, player.playerPos[0].x, player.playerPos[0].y, DOT_SIZE, DOT_SIZE);
     deleteLast();
     
@@ -222,7 +222,7 @@ static void moveDown()
     if(validateMovement(player.playerPos[0].x, player.playerPos[0].y + DOT_SIZE) != 0)
         player.isAlive = 0;
     changeSnakeSegmentsPos();
-    player.playerPos[0].y=player.playerPos[0].y - DOT_SIZE;
+    player.playerPos[0].y=player.playerPos[0].y + DOT_SIZE;
     sysDrawFilledRect(whiteColor, player.playerPos[0].x, player.playerPos[0].y, DOT_SIZE, DOT_SIZE);
     deleteLast();
    
@@ -277,7 +277,6 @@ static void move(){
      if(player.moveDir==4){
         moveRight();
      }
-
 }
 void eatApple()
 {
