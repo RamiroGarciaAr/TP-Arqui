@@ -211,7 +211,10 @@ void drawFilledRectangle(Color color, uint32_t x, uint32_t y, uint32_t width, ui
         }
     }
 }
-
+void drawFilledSquare(uint32_t x,uint32_t y, uint32_t size, Color hexColor)
+{
+    drawFilledRectangle(hexColor,x,y,size,size);
+}
 
 void* videoGetPtrToPixel(uint64_t x, uint64_t y) {
     /*
@@ -219,9 +222,60 @@ void* videoGetPtrToPixel(uint64_t x, uint64_t y) {
     */
     return (void*)(VBE_mode_info->framebuffer + VBE_mode_info->bpp * (x + (y * (uint64_t)VBE_mode_info->width)));
 }
+//Screen Driver
+/*
+uint32_t getCursorX()
+{
+    return cursorX;
+}
+uint32_t getCursorY()
+{
+    return cursorY;
+}
+static void setXCursorPosition(uint32_t newXPos)
+{
+    cursorX = newXPos;
+}
+static void setYCursorPosition(uint32_t newYPos)
+{
+    cursorY = newYPos;
+}
+void setDrawingPosition(uint32_t xPos,uint32_t yPos)
+{
+    setYCursorPosition(yPos);
+    setXCursorPosition(xPos);
+}
 
 /// New char system
-/*
+uint64_t getPixelHex(uint32_t x, uint32_t y) {
+	uint8_t * screen = (uint8_t *) ((uint64_t) (VBE_mode_info->framebuffer));
+    uint32_t offset = VBE_mode_info->pitch*y + x*3;
+    
+    int b = screen[offset];
+    int g = screen[offset+1];
+    int r = screen[offset+2];
+    return FROM_RGB(r,g,b);
+}
+void putPixel(uint64_t hexColor,uint32_t x,uint32_t y)
+{
+    uint8_t *screen = (uint8_t *) ((uint64_t)(VBE_mode_info->framebuffer));
+    uint32_t offset = VBE_mode_info->pitch*y + x*3;   
+    screen[offset] = TO_RED(hexColor);
+    screen[offset+1] = TO_BLUE(hexColor);
+    screen[offset+2] = TO_GREEN(hexColor);
+}
+
+void putSquare(uint32_t x,uint32_t y,uint32_t size,uint64_t hexColor)
+{
+    for (uint32_t i=0;i<size;i++)
+    {
+        for(uint32_t j=0; j<size;j++)
+        {
+            putPixel(hexColor,x+i,y+j);
+        }
+    }
+}
+
 void drawChar(uint64_t hexColor, char character)
 {
     int a = cursorX;
@@ -241,9 +295,29 @@ void drawChar(uint64_t hexColor, char character)
             y+=size; // Salto a la siguiente fila de píxeles
             a=x; // Reinicia la posición horizontal al inicio
         }
+        font[i+(start * 32)] & (char)0x01 ? putSquare(a,y,size,hexColor):0;
 
+        uint8_t aux = 0x02;
+
+        for (int j =0;j<8;j++)
+        {
+             // Comprueba cada bit de la fuente y dibuja un píxel si está activo
+            ((uint8_t)font[i + (start * 32)] & (uint8_t)aux) >> j ? putSquare(a, y, size, hexColor) : 0;
+            a += size;  // Avanza a la siguiente posición horizontal
+            aux <<= 1;  // Desplaza el bit auxiliar hacia la izquierda
+        }
 
     }
+}
+void moveOneLineUp() {
+    char* dst = (char*)(uintptr_t)(VBE_mode_info->framebuffer); // Puntero al framebuffer
+    char* src = dst + VBE_mode_info->pitch * size * 16; // Puntero a la línea de origen
+    uint64_t numBytes = VBE_mode_info->pitch * (VBE_mode_info->height - size * 16); // Cantidad de bytes a copiar
+
+    memcpy(dst, src, numBytes); // Copia los bytes desde la línea de origen a la línea de destino
+    //drawRectangle(bg_color, 0, VBE_mode_info->height - size*16, 1024, size*16 );
+    //drawFilledRectangle(backgroundColor,0,VBE_mode_info->height - size*16,1024,size*16);
+    cursorY -= (size * 16); // Actualiza la posición del cursor en el eje Y
 }
 
 void character(uint64_t hexColor, char c)
