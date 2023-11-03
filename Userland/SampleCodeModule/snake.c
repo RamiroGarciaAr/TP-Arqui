@@ -7,10 +7,10 @@
 //Color white = {0xFF,0xFF,0xFF};
 
 //Colors
-uint32_t whiteColor = 0xFFFFFF;
-uint32_t redColor = 0xFF0000;
-uint64_t blackColor = 0x00000000; 
-uint32_t blueColor=	0x0000FF;
+uint64_t whiteColor = 0xFFFFFF;
+uint64_t redColor = 0xFF0000;
+uint64_t blackColor = 0x000000; 
+uint64_t blueColor=  0x0000FF;
 
 Apple apple;
 Player player;
@@ -24,28 +24,37 @@ static void setup();
 static void readControls();
 static void drawSnake();
 static void deleteLast();
-static void changeSnakeSegmentsPos();
 static void moveUp();
 static void moveDown();
 static void moveLeft();
 static void moveRight();
 static void eatApple();
 void checkCollision(int movDir);
-static void setupPlayerPosition();
 static void borders();
 
+static void setPlayerPosition(uint64_t startX,uint64_t startY)
+{
+    player.playerPos[0].x = startX;
+    player.playerPos[0].y = startY;
 
+    for (int i=1;i<player.currentSize;i++)
+    {
+        player.playerPos[i].x = startX+DOT_SIZE*i;
+        player.playerPos[i].y = startY;
+    }
+}
 
 static void setup()
 {
     //Player set up
     player.points = 0;
     player.isAlive = 1;
-    player.playerPos[0].x = SCREEN_WIDTH/2;
-    player.playerPos[0].y = SCREEN_HEIGHT/2;
+
     player.moveDir = 3; // <--
     player.currentSize = PLAYER_INIT_SIZE;
-    setupPlayerPosition();
+
+    setPlayerPosition(SCREEN_WIDTH/2,SCREEN_HEIGHT/2);
+
     player.color = whiteColor;
 
     //Apple setup
@@ -55,14 +64,7 @@ static void setup()
     borders();
 }
 
-static void setupPlayerPosition()
-{
-    for(int i=0;i<player.currentSize;i++)
-    {
-        player.playerPos[i].x = SCREEN_WIDTH/2 + DOT_SIZE*i;
-        player.playerPos[i].y = SCREEN_HEIGHT/2;
-    }
-}
+
 
 //Reads Player Inputs
 static void readControls()
@@ -145,18 +147,14 @@ static void menuScreen()
 
 static void borders(){
     uint16_t scrW,scrY;
-    sysGetScrWidth(&scrW);
-    getScreenHeight(&scrY);
-    uint16_t xLimit = scrW -DEF_WIDTH;
-    uint16_t yLimit = scrY -DEF_HEIGHT;
-    uint16_t x = DEF_WIDTH;
-    uint16_t y = DEF_HEIGHT;
+    scrW = sysGetScrWidth();
+    scrY = sysGetScrHeight();
 
     // Dibuja los limites de la pantalla
-    sysDrawFilledRect(whiteColor,x,y,xLimit,DOT_SIZE);
-    sysDrawFilledRect(whiteColor,x,y,DOT_SIZE,yLimit);
-    sysDrawFilledRect(whiteColor,x,760,xLimit,DOT_SIZE);
-    sysDrawFilledRect(whiteColor,1015,y,DOT_SIZE,yLimit);
+    sysDrawFilledRect(whiteColor,0,scrY - DOT_SIZE,scrW,DOT_SIZE); //Abajo
+    sysDrawFilledRect(whiteColor,0,0,scrW,DOT_SIZE); //Arriba
+    sysDrawFilledRect(whiteColor,0,0,DOT_SIZE,scrY); //Izq
+    sysDrawFilledRect(whiteColor,scrW-DOT_SIZE,0,DOT_SIZE,scrY); //Right
 }
 
 
@@ -176,27 +174,20 @@ static void drawSnake()
     //Subject to change
     for (int i =0;i<player.currentSize;i++)
     {
-        sysDrawFilledRect(whiteColor, player.playerPos[i].x, player.playerPos[i].y, DOT_SIZE, DOT_SIZE);
+        sysDrawFilledRect(whiteColor, player.playerPos[i].x - DOT_SIZE / 2, player.playerPos[i].y - DOT_SIZE / 2, DOT_SIZE, DOT_SIZE);
     }
 }
-static void deleteLast()
-{
-    sysDrawFilledRect(whiteColor, player.playerPos[player.currentSize].x, player.playerPos[player.currentSize].y, DOT_SIZE, DOT_SIZE);
-}
+
 //checks the color of the nextPixel
 //returns if crashed 0 if all good :) 
 //
-static uint32_t validate(uint64_t x, uint64_t y)
+static uint64_t validate(uint64_t x, uint64_t y)
 {
     uint64_t c;
     sysGetPtrToPixel(x, y, &c);
     return c;
 }
 
-uint32_t check(uint32_t color)
-{
-    return blackColor - color;
-}
 
 static void gameOverScreen()
 {   
@@ -210,21 +201,24 @@ static void gameOverScreen()
     sysDrawCustomCharBack('E',whiteColor,SCREEN_WIDTH/2,200, 6);
     sysDrawCustomCharBack('R',whiteColor,SCREEN_WIDTH/2+100,200, 6);
 }
-static void changeSnakeSegmentsPos()
+static void updatePlayerTail(AxisPoint lastPosition)
 {
-    for(int i=player.currentSize;i<1;i--)
+    player.playerPos[1] = lastPosition;
+    for (int i=player.currentSize-1;i>1;i--)
     {
-        player.playerPos[i]=player.playerPos[i-1];
+        player.playerPos[i] = player.playerPos[i-1];
     }
-    
+
 }
 
 static void moveUp()
 {
-    if (check(validate(player.playerPos[0].x,player.playerPos[0].y+DOT)) == 0)
+    if (validate(player.playerPos[0].x,player.playerPos[0].y-DOT_SIZE) != whiteColor)
     {
+        AxisPoint lastPostion = player.playerPos[0];
         player.playerPos[0].y=player.playerPos[0].y - DOT_SIZE;
-        sysDrawFilledRect(whiteColor, player.playerPos[0].x, player.playerPos[0].y, DOT_SIZE, DOT_SIZE);
+        updatePlayerTail(lastPostion);
+
     }
     else    
     {
@@ -236,10 +230,11 @@ static void moveUp()
 }
 static void moveDown()
 {
-    if (check(validate(player.playerPos[0].x,player.playerPos[0].y-DOT)) == 0)
+    if (validate(player.playerPos[0].x,player.playerPos[0].y+DOT_SIZE) != whiteColor)
     {
+        AxisPoint lastPostion = player.playerPos[0];
         player.playerPos[0].y=player.playerPos[0].y + DOT_SIZE;
-        sysDrawFilledRect(whiteColor, player.playerPos[0].x, player.playerPos[0].y, DOT_SIZE, DOT_SIZE);
+        updatePlayerTail(lastPostion);
     }
     else
     {
@@ -251,10 +246,11 @@ static void moveDown()
 }
 static void moveLeft()
 {
-    if (check(validate(player.playerPos[0].x - DOT,player.playerPos[0].y)) == 0)
+    if (validate(player.playerPos[0].x - DOT_SIZE,player.playerPos[0].y) != whiteColor)
     {
+        AxisPoint lastPostion = player.playerPos[0];
         player.playerPos[0].x=player.playerPos[0].x - DOT_SIZE;
-        sysDrawFilledRect(whiteColor, player.playerPos[0].x, player.playerPos[0].y, DOT_SIZE, DOT_SIZE);
+        updatePlayerTail(lastPostion);
     }
     else    
     {
@@ -267,10 +263,11 @@ static void moveLeft()
 }
 static void moveRight()
 {
-    if (check(validate(player.playerPos[0].x + DOT,player.playerPos[0].y)) == 0)
+    if (validate(player.playerPos[0].x + DOT_SIZE,player.playerPos[0].y) != whiteColor)
     {
+        AxisPoint lastPostion = player.playerPos[0];
         player.playerPos[0].x=player.playerPos[0].x  + DOT_SIZE;
-        sysDrawFilledRect(whiteColor, player.playerPos[0].x, player.playerPos[0].y, DOT_SIZE, DOT_SIZE);
+        updatePlayerTail(lastPostion);
     }
     else    
     {
@@ -295,8 +292,7 @@ static AxisPoint getRandomPoint()
 void eatApple()
 {
     player.currentSize++;
-    sysDrawFilledRect(whiteColor,  apple.applePos.x ,  apple.applePos.y, DOT_SIZE, DOT_SIZE);
-    changeSnakeSegmentsPos();
+    sysDrawFilledRect(whiteColor,  apple.applePos.x - DOT_SIZE/2,  apple.applePos.y - DOT_SIZE/2, DOT_SIZE, DOT_SIZE);
     player.playerPos[0].x=apple.applePos.x;
     player.playerPos[0].y=apple.applePos.y;
 

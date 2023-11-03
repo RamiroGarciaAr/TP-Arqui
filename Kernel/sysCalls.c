@@ -105,9 +105,13 @@ uint64_t drawVideoChar(char character, uint32_t color, uint64_t x, uint64_t y, u
 }
 
 uint64_t getPtrToPixel(uint64_t x, uint64_t y, uint64_t *color, uint64_t empty4, uint64_t empty5){
-    uint64_t *c = color;
-    uint64_t *screenPixel = (uint64_t *) videoGetPtrToPixel(x,y);
-    c = screenPixel;
+    Color* screenPixel = videoGetPtrToPixel(x,y);
+    
+    *color =
+        ((uint64_t)screenPixel->r << 16) |
+        ((uint64_t)screenPixel->g << 8) |
+        (uint64_t)screenPixel->b;
+
     return 0;
 }
 uint64_t zoomIn(uint64_t empty1, uint64_t empty2, uint64_t empty3, uint64_t empty4, uint64_t empty5)

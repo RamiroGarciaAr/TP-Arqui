@@ -216,11 +216,13 @@ void drawFilledSquare(uint32_t x,uint32_t y, uint32_t size, Color hexColor)
     drawFilledRectangle(hexColor,x,y,size,size);
 }
 
-void* videoGetPtrToPixel(uint64_t x, uint64_t y) {
+Color* videoGetPtrToPixel(uint64_t x, uint64_t y) {
     /*
     Punto (x,y) en la pantalla. Como la memoria es continua, para llegar a ese punto es mediante la sig. ecuación:
     */
-    return (void*)(VBE_mode_info->framebuffer + VBE_mode_info->bpp * (x + (y * (uint64_t)VBE_mode_info->width)));
+    Color* fbPtr = (Color*)((uint64_t)VBE_mode_info->framebuffer);
+
+    return &fbPtr[VBE_mode_info->width * y + x];
 }
 //Screen Driver
 /*

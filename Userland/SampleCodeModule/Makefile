@@ -14,6 +14,7 @@ all: $(MODULE)
 
 $(MODULE): $(LOADEROBJECT) $(OBJECTS_ASM) $(OBJECTS) $(STATICLIBS)
 	$(LD) $(LDFLAGS) -T sampleCodeModule.ld -o ../$(MODULE) $(LOADEROBJECT) $(OBJECTS) $(OBJECTS_ASM) $(STATICLIBS)
+	$(LD) $(LDFLAGS) -T sampleCodeModule.ld --oformat=elf64-x86-64 -o ../0000-sampleCodeModule.elf $(LOADEROBJECT) $(OBJECTS) $(OBJECTS_ASM) $(STATICLIBS)
 
 %.o : %.asm
 	$(ASM) $(ASMFLAGS) $< -o $@
