@@ -179,7 +179,7 @@ static void drawSnake()
 }
 
 //checks the color of the nextPixel
-//returns if crashed 0 if all good :) 
+//returns if crashed 0, if not, all good :) 
 //
 static uint64_t validate(uint64_t x, uint64_t y)
 {
@@ -289,7 +289,7 @@ static AxisPoint getRandomPoint()
     return point;
 }
 
-void eatApple()
+static void eatApple()
 {
     player.currentSize++;
     sysDrawFilledRect(whiteColor,  apple.applePos.x - DOT_SIZE/2,  apple.applePos.y - DOT_SIZE/2, DOT_SIZE, DOT_SIZE);
@@ -297,6 +297,15 @@ void eatApple()
     player.playerPos[0].y=apple.applePos.y;
 
     apple.applePos = getRandomPoint();
+}
+
+static void increase_score()
+{
+    if(validate(player.playerPos[0].x,player.playerPos[0].y) == redColor){
+        eatApple();
+        player.points++;
+        drawSnake();
+    }
 }
 
 void start_snake(){
@@ -314,6 +323,7 @@ void start_snake(){
         clearScreen(BACKBUFFER);
         readControls();
         playerMovement();
+        increase_score();
     }
     
     if(player.isAlive == 0){

@@ -7,7 +7,7 @@
 #define MAX_LENGTH 256
 
 typedef struct player{
-    uint64_t points; //amount of apples eaten
+    int points; //amount of apples eaten
     int isAlive; 
 
     AxisPoint playerPos[MAX_LENGTH] ;
