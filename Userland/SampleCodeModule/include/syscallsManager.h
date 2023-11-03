@@ -18,7 +18,7 @@ extern uint64_t sysClearScreen(uint64_t mode);
 extern uint64_t sysPlayBeep();
 extern uint64_t sysDrawCustomCharBack(char c, uint64_t color, uint64_t x, uint64_t y, uint64_t size);
 extern uint64_t sysReadFromBuffer(const char * buf);
-extern uint64_t sysGetPtrToPixel(uint64_t x, uint64_t y, uint32_t* color);
+extern uint64_t sysGetPtrToPixel(uint64_t x, uint64_t y, uint64_t* color);
 extern uint64_t sysZoomIn();
 extern uint64_t sysZoomOut();
 

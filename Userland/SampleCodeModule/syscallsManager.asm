@@ -19,6 +19,7 @@ GLOBAL sysGetPtrToPixel
 GLOBAL sysZoomIn
 GLOBAL sysZoomOut
 
+
 ;no se pushea rax para mantener el valor de retorno
 %macro pushState 0
 	push rbx

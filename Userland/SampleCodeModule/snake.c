@@ -1,4 +1,5 @@
 #include <snake.h>
+#include <syscallsManager.h>
 
 #define DOT  0x000001
 #define DEF_HEIGHT 16
@@ -8,7 +9,7 @@
 //Colors
 uint32_t whiteColor = 0xFFFFFF;
 uint32_t redColor = 0xFF0000;
-uint32_t blackColor = 0x000000; 
+uint64_t blackColor = 0x00000000; 
 uint32_t blueColor=	0x0000FF;
 
 Apple apple;
@@ -87,6 +88,7 @@ static void readControls()
                 player.moveDir = 3;
             break;
         case ESC:
+            sysPlayBeep();
             clearScreen(BACKBUFFER);
             player.isAlive =0;
             sysVideoRefresh();
@@ -186,7 +188,7 @@ static void deleteLast()
 //
 static uint32_t validate(uint64_t x, uint64_t y)
 {
-    uint32_t c;
+    uint64_t c;
     sysGetPtrToPixel(x, y, &c);
     return c;
 }
@@ -197,7 +199,7 @@ uint32_t check(uint32_t color)
 }
 
 static void gameOverScreen()
-{
+{   
     sysDrawCustomCharBack('G',whiteColor,SCREEN_WIDTH/2-200,50, 6);
     sysDrawCustomCharBack('A',whiteColor,SCREEN_WIDTH/2-100,50, 6);
     sysDrawCustomCharBack('M',whiteColor,SCREEN_WIDTH/2,50, 6);
@@ -226,6 +228,7 @@ static void moveUp()
     }
     else    
     {
+        sysPlayBeep();
         clearScreen(BACKBUFFER);
         player.isAlive =0;
         sysVideoRefresh();
@@ -240,6 +243,7 @@ static void moveDown()
     }
     else
     {
+            sysPlayBeep();
             clearScreen(BACKBUFFER);
             player.isAlive =0;
             sysVideoRefresh();
@@ -254,6 +258,7 @@ static void moveLeft()
     }
     else    
     {
+        sysPlayBeep();
         clearScreen(BACKBUFFER);
         player.isAlive =0;
         sysVideoRefresh();
@@ -269,6 +274,7 @@ static void moveRight()
     }
     else    
     {
+        sysPlayBeep();
         clearScreen(BACKBUFFER);
         player.isAlive =0;
         sysVideoRefresh();

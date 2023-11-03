@@ -32,7 +32,7 @@ uint64_t clearScreen(uint64_t mode, uint64_t empty2, uint64_t empty3, uint64_t e
 uint64_t checkKeyboardActivity(uint64_t empty1, uint64_t empty2, uint64_t empty3, uint64_t empty4, uint64_t empty5);
 uint64_t drawVideoChar(char number, uint32_t color, uint64_t x, uint64_t y, uint64_t size);
 uint64_t readCharFromBuffer(char* buf, uint64_t empty1, uint64_t empty2, uint64_t empty3, uint64_t empty4);
-uint64_t getPtrToPixel(uint64_t x, uint64_t y, uint32_t* color, uint64_t empty4, uint64_t empty5);
+uint64_t getPtrToPixel(uint64_t x, uint64_t y, uint64_t *color, uint64_t empty4, uint64_t empty5);
 uint64_t zoomIn(uint64_t empty1, uint64_t empty2, uint64_t empty3, uint64_t empty4, uint64_t empty5);
 uint64_t zoomOut(uint64_t empty1, uint64_t empty2, uint64_t empty3, uint64_t empty4, uint64_t empty5);
 
