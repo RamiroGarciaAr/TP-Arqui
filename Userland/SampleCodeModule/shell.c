@@ -6,15 +6,6 @@
 #include <snake.h>
 #include <syscallsManager.h>
 
-
-#define EXIT_KEY 27
-#define REGS_KEY 29
-#define MAXSIZE 15
-#define CANTREGS 18
-#define CHARHEIGHT 16
-#define CHARWIDTH 8
-#define MAXINPUTLEN 50
-
 extern int sysGetTicksElapsed();
 extern uint64_t * saveRegisters();
 

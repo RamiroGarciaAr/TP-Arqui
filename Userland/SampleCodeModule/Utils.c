@@ -194,11 +194,14 @@ void getTime(char * timeBuff) {
 
 void zoomIn(){
     clearScreen(FRAMEBUFFER);
+    setCursorPos(0, getScreenHeight()-(2*CHARHEIGHT*getSize()));
     sysZoomIn();
 }
 
 void zoomOut(){
+
     clearScreen(FRAMEBUFFER);
+    setCursorPos(0, getScreenHeight()-CHARHEIGHT*getSize());
     sysZoomOut();
 }
 

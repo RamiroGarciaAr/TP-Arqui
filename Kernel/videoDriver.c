@@ -155,7 +155,7 @@ void drawConsoleCharacter(char c, Color color, uint64_t size) {
             for(int i=0; i<CHAR_WIDTH*size; i++) {
                 //si el bit no es un 0 se cambia
                 if(bitRepresentation[conversionRow][h/size] & (1 << i/size)) {
-                    drawPixelFront(printingColor,getCurrentX()+i, getCurrentY()+h);
+                    drawPixelFront(printingColor,getCurrentX()+i, (getCurrentY())+h+size);
                 }
             }
         }

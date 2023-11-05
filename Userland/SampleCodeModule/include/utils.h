@@ -7,6 +7,16 @@
 #define BACKBUFFER 0
 #define FRAMEBUFFER 1
 
+//constantes de shell
+#define EXIT_KEY 27
+#define REGS_KEY 29
+#define MAXSIZE 15
+#define CANTREGS 18
+#define CHARHEIGHT 16
+#define CHARWIDTH 8
+#define MAXINPUTLEN 50
+
+
 //funciones de la libreria estandar y otras mas especificas para las operaciones requeridas
 //si bien no todas se usan
 int pow(int base, unsigned int exp);
