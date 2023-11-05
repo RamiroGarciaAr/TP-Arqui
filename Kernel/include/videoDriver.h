@@ -37,7 +37,7 @@ Color getDrawingColor();
 void setDrawingColor(Color color);
 
 // funcion para imprimir un caracter en la posicion actual de drawingPosition segun el color pasado por parametro
-void drawConsoleCharacter(char c, Color color);
+void drawConsoleCharacter(char c, Color color,uint64_t size);
 
 // fuciones para obtener los buffer usados
 uint8_t * getFrameBuffer();

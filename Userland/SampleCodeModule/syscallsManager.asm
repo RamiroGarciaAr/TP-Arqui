@@ -18,6 +18,7 @@ GLOBAL sysPlayBeep
 GLOBAL sysGetPtrToPixel
 GLOBAL sysZoomIn
 GLOBAL sysZoomOut
+GLOBAL sysGetSize
 
 
 ;no se pushea rax para mantener el valor de retorno
@@ -118,3 +119,6 @@ sysZoomIn:
 
 sysZoomOut:
 	makeSysCall 16
+
+sysGetSize:
+	makeSysCall 17

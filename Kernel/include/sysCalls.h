@@ -15,7 +15,7 @@
 #define DRAW 2
 //color en hexa para imprimir en la shell
 #define DEFAULTCOLOR 0xFFFFFF
-#define ZOOM_RATE 5
+#define ZOOM_RATE 1
 
 
 uint64_t write(uint64_t fd, const char * buf, uint64_t len, uint64_t empty1, uint64_t empty2); // me retorna len

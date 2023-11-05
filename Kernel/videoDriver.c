@@ -54,16 +54,16 @@ Color backgroundColor = {0x00, 0x00, 0x00};
 uint32_t cursorX =0;
 uint32_t cursorY =0;
 
-uint32_t size = DEFAULT_FONT_SIZE;
+uint32_t fontSize = DEFAULT_FONT_SIZE;
 
 
 void setFontSize(uint32_t newSize)
 {
-    size = newSize;
+    fontSize = newSize;
 }
 uint32_t getFontSize()
 {
-    return size;
+    return fontSize;
 }
 //double buffer
 uint8_t backBuffer[BUFFER_HEIGHT * BUFFER_WIDTH * 3] = {0x00};
@@ -144,17 +144,17 @@ static int isPrintableChar(char c) {
     return c >= LOWEST_CHAR && c <= HIGHEST_CHAR;
 }
 
-void drawConsoleCharacter(char c, Color color) {
+void drawConsoleCharacter(char c, Color color, uint64_t size) {
     if(isPrintableChar(c)) {
         Color printingColor = color;
         if (c == ' '){
             printingColor = backgroundColor;
         }
         int conversionRow = c - LOWEST_CHAR;
-        for(int h=0; h<CHAR_HEIGHT; h++) {
-            for(int i=0; i<CHAR_WIDTH; i++) {
+        for(int h=0; h<CHAR_HEIGHT*size; h++) {
+            for(int i=0; i<CHAR_WIDTH*size; i++) {
                 //si el bit no es un 0 se cambia
-                if(bitRepresentation[conversionRow][h] & (1 << i)) {
+                if(bitRepresentation[conversionRow][h/size] & (1 << i/size)) {
                     drawPixelFront(printingColor,getCurrentX()+i, getCurrentY()+h);
                 }
             }
@@ -166,9 +166,9 @@ void drawConsoleCharacter(char c, Color color) {
     }
     //si no es un caracter printeable y tampoco requiere de una atencion especial
     // directamente se actualiza el puntero a la siguiente posicion valida a printear en pantalla
-    setDrawingPosition(getCurrentX()+ CHAR_WIDTH, getCurrentY());
+    setDrawingPosition(getCurrentX()+ CHAR_WIDTH*size, getCurrentY());
     //se chequea que no se haya llegado a un borde
-    if(getCurrentX() > getScreenWidth() - CHAR_WIDTH) {
+    if(getCurrentX() > getScreenWidth() - CHAR_WIDTH*size) {
         newLine();
     }
 }

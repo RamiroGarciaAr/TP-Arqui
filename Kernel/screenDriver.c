@@ -58,16 +58,16 @@ void newLine() {
     // si no hay espacio para avanzar la posicion en Y,
     // se mueve la pantalla entera hacia arriba y se borra la parte inferior
     //el 2 viene de que ademas de la linea actual tiene que entrar otra linea abajo (empiezo cada linea desde la posicion en y mas proxima a la ultima linea impresa)
-    if(getScreenHeight() < (getCurrentY() + 2*CHAR_HEIGHT)) {
+    if(getScreenHeight() < (getCurrentY() + 2*CHAR_HEIGHT*getFontSize())) {
         //si entre es porque estoy en la ultima linea
         uint8_t * destination = getFrameBuffer();
         //el 3 viene de contar los bytes usados por cada pixel para definir el color
-        uint8_t * from = (destination + BPP*(getScreenWidth()*CHAR_HEIGHT));
+        uint8_t * from = (destination + BPP*(getScreenWidth()*CHAR_HEIGHT*getFontSize()));
         //se calcula cuantos son los bytes que hay que copiar desde la segunda linea en adelante
-        uint64_t len = BPP*((getScreenHeight()-CHAR_HEIGHT)*((uint64_t)getScreenWidth()));
+        uint64_t len = BPP*((getScreenHeight()-CHAR_HEIGHT*getFontSize())*((uint64_t)getScreenWidth()));
         copymem(from,destination,len);
         //se calcula la cantidad de bytes a eliminar de una linea (para borrar la ultima)
-        uint64_t clearLen = BPP*((uint64_t)getScreenWidth() * CHAR_HEIGHT);
+        uint64_t clearLen = BPP*((uint64_t)getScreenWidth() * CHAR_HEIGHT*getFontSize());
         uint8_t *  clearDestination = destination + len;
         Color background = getBackgroundColor();
         //se borra la ultima completando con pixeles del color de fondo
@@ -83,25 +83,25 @@ void newLine() {
             }
         }
     } else { //si queda espacio en la pantalla se pasa a la siguiente linea sin mover nada de lo ya impreso
-        setYPosition(getCurrentY()+CHAR_HEIGHT);
+        setYPosition(getCurrentY()+CHAR_HEIGHT*getFontSize());
     }
 }
 
 void tab(){
     //no se hace un chequeo del borde para poder modificar la posicion en y al hacer el print
-    setXPosition(getCurrentX()+ TABLENGTH * CHAR_WIDTH);
+    setXPosition(getCurrentX()+ TABLENGTH * CHAR_WIDTH*getFontSize());
 }
 
 void backspace(){
     if(getCurrentX() == 0){
-        setDrawingPosition(getScreenWidth() - CHAR_WIDTH, getCurrentY()- CHAR_HEIGHT);
-        drawConsoleCharacter(' ', getBackgroundColor());
-        setDrawingPosition(getScreenWidth()-CHAR_WIDTH, getCurrentY()- CHAR_HEIGHT);
+        setDrawingPosition(getScreenWidth() - CHAR_WIDTH*getFontSize(), getCurrentY()- CHAR_HEIGHT*getFontSize());
+        drawConsoleCharacter(' ', getBackgroundColor(),getFontSize());
+        setDrawingPosition(getScreenWidth()-CHAR_WIDTH*getFontSize(), getCurrentY()- CHAR_HEIGHT*getFontSize());
         return;
     }
-    setDrawingPosition(getCurrentX()-CHAR_WIDTH,getCurrentY());
-    drawConsoleCharacter(' ', getBackgroundColor());
-    setDrawingPosition(getCurrentX()-CHAR_WIDTH,getCurrentY());
+    setDrawingPosition(getCurrentX()-CHAR_WIDTH*getFontSize(),getCurrentY());
+    drawConsoleCharacter(' ', getBackgroundColor(),getFontSize());
+    setDrawingPosition(getCurrentX()-CHAR_WIDTH*getFontSize(),getCurrentY());
 }
 
 
@@ -123,7 +123,7 @@ void manageSpecialCharacter(char c){
 
 void print(const char * s) {
     while(*s) {
-        drawConsoleCharacter(*s, getDrawingColor());
+        drawConsoleCharacter(*s, getDrawingColor(), getFontSize());
         s++;
     }
 }

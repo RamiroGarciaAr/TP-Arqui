@@ -9,7 +9,8 @@
         "syscalls.h": "c",
         "point.h": "c",
         "snake.h": "c",
-        "videodriver.h": "c"
+        "videodriver.h": "c",
+        "utils.h": "c"
     },
     "C_Cpp.default.compilerPath": ""
 }

@@ -26,11 +26,14 @@ void print(char* string);
 void printf(char* string, uint32_t color);
 void println(char* string);
 void printint(uint64_t value);
+void zoomIn();
+void zoomOut();
 
 int strtok(char * s, char delim, char * array[], int arraySize);
 int strlen(char * s);
 int strcmp(char * s1, char * s2);
 int getRandomInBetween(int max,int min);
 int getRandom();
+int getSize();
 
 #endif //UTILS_H

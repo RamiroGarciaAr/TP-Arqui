@@ -51,7 +51,7 @@ uint32_t orange = 0xFFA500;
 
 void openShell(){
     setInstructions();
-    setCursorPos(0, getScreenHeight()-CHARHEIGHT);
+    setCursorPos(0, getScreenHeight()-CHARHEIGHT*getSize());
     printf("Welcome to the shell, here are the instructions available to you: ", gray);
     putchar('\n');
     help();
@@ -153,8 +153,8 @@ static void setInstructions(){
                                                           then use this instruction to obtain their values");
     setNewInstruction(&printCurrentTime,"printTime", "              prints the current time, using the format: HH:MM:SS");
     setNewInstruction(&help,"help", "                   prints the whole set of instructions available to you with a short description of them");
-    //setNewInstruction(&sysZoomIn,"Zoom In","               Zooms into the Screen");
-    //setNewInstruction(&sysZoomOut,"Zoom Out","              Zooms out of the Screen");
+    setNewInstruction(zoomIn,"zoomin","               Zooms into the Screen");
+    setNewInstruction(zoomOut,"zoomout","              Zooms out of the Screen");
 
 
 }

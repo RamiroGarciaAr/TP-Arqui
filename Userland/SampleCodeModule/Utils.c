@@ -191,3 +191,17 @@ void getTime(char * timeBuff) {
     }
     p[8] = 0;
 }
+
+void zoomIn(){
+    clearScreen(FRAMEBUFFER);
+    sysZoomIn();
+}
+
+void zoomOut(){
+    clearScreen(FRAMEBUFFER);
+    sysZoomOut();
+}
+
+int getSize(){
+   return sysGetSize();
+}
