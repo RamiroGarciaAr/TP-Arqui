@@ -31,7 +31,6 @@ static void setInstructions();
 static void setNewInstruction();
 static void printRegisters();
 static void printCurrentTime();
-static void help();
 static void uint64ToHex(uint64_t n, char buf[16]);
 
 uint32_t blue = 0x0000FF;
@@ -150,7 +149,7 @@ static void setInstructions(){
 
 }
 
-static void help(){
+void help(){
     println("Instructions Available: ");
     for (int i = 0; i < instructionsCounter; i++){
         //antes eran printf con green
