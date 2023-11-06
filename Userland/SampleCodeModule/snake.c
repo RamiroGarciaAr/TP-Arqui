@@ -33,6 +33,8 @@ static void eatApple();
 void checkCollision(int movDir);
 static void borders();
 
+int lastmoveDir;
+
 static void setPlayerPosition(uint64_t startX,uint64_t startY)
 {
     player.playerPos[0].x = startX;
@@ -72,22 +74,23 @@ static void readControls()
 {
     char c;
     sysReadFromBuffer(&c);
+    lastmoveDir = player.moveDir;
     switch (c)
     {
         case 'w':
-            if (player.moveDir != 2 || player.moveDir != 1)
-                player.moveDir = 1;
+            if (player.moveDir != 2)
+            player.moveDir = 1;
             break;
         case 's':
-            if (player.moveDir != 1 || player.moveDir != 2)
+            if (player.moveDir != 1)
                 player.moveDir = 2;
             break;
         case 'd':
-            if (player.moveDir != 3 || player.moveDir != 4 )
+            if (player.moveDir != 3)
                 player.moveDir = 4;
             break;
         case 'a':
-            if (player.moveDir != 4 || player.moveDir != 3)
+            if (player.moveDir != 4)
                 player.moveDir = 3;
             break;
         case ESC:
@@ -106,16 +109,20 @@ static void playerMovement()
     switch (moveDir)
     {
     case 1:
-        moveUp();
+        if (lastmoveDir != 2)
+            moveUp();
         break;
     case 2:
-        moveDown();
+        if (lastmoveDir != 1)
+            moveDown();
         break;
     case 3:
-        moveLeft();
+        if (lastmoveDir != 4)
+            moveLeft();
         break;
     case 4:
-        moveRight();
+        if (lastmoveDir != 3)
+            moveRight();
         break;
     default:
         break;
