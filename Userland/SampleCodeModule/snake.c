@@ -10,7 +10,8 @@
 uint64_t whiteColor = 0xFFFFFF;
 uint64_t redColor = 0xFF0000;
 uint64_t blackColor = 0x000000; 
-uint64_t blueColor=  0x0000FF;
+uint64_t blueColor =  0x0000FF;
+uint64_t grayColor = 0x808080;
 
 Apple apple;
 Player player;
@@ -161,7 +162,7 @@ static void borders(){
 //draws game status
 static void drawFrame()
 {
-    sysDrawCustomCharBack(player.points +'0',whiteColor, SCREEN_WIDTH/2,50, 6);
+    sysDrawCustomCharBack(player.points +'0',grayColor, SCREEN_WIDTH/2,50, 6);
     sysDrawFilledRect(redColor,apple.applePos.x, apple.applePos.y, apple.size, apple.size);
     drawSnake();
     borders();
@@ -283,8 +284,8 @@ static AxisPoint getRandomPoint()
 {
     AxisPoint point;
     
-    point.x = getRandomInBetween(SCREEN_WIDTH,0);
-    point.y = getRandomInBetween(SCREEN_HEIGHT,0);
+    point.x = getRandomInBetween(sysGetScrWidth()- DOT_SIZE,DOT_SIZE);
+    point.y = getRandomInBetween(sysGetScrHeight() - DOT_SIZE,DOT_SIZE);
 
     return point;
 }
@@ -292,12 +293,13 @@ static AxisPoint getRandomPoint()
 static void eatApple()
 {
     player.currentSize++;
-    sysDrawFilledRect(whiteColor,  apple.applePos.x - DOT_SIZE/2,  apple.applePos.y - DOT_SIZE/2, DOT_SIZE, DOT_SIZE);
-    player.playerPos[0].x=apple.applePos.x;
-    player.playerPos[0].y=apple.applePos.y;
-
     apple.applePos = getRandomPoint();
+    //Increse Size
+    player.playerPos[player.currentSize].x = player.playerPos[player.currentSize-1].x + DOT_SIZE;
+    player.playerPos[player.currentSize].y = player.playerPos[player.currentSize-1].y;
+
 }
+
 
 static void increase_score()
 {

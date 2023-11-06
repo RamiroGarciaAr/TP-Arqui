@@ -9,7 +9,7 @@
 #define SCREEN_WIDTH 1024
 #define SCREEN_HEIGHT 768
 
-#define PLAYER_INIT_SIZE 30
+#define PLAYER_INIT_SIZE 3
 
 #define DOT_SIZE 10
 
