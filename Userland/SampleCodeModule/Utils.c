@@ -196,6 +196,7 @@ void zoomIn(){
     clearScreen(FRAMEBUFFER);
     setCursorPos(0, getScreenHeight()-(2*CHARHEIGHT*getSize()));
     sysZoomIn();
+    help();
 }
 
 void zoomOut(){
@@ -203,6 +204,7 @@ void zoomOut(){
     clearScreen(FRAMEBUFFER);
     setCursorPos(0, getScreenHeight()-CHARHEIGHT*getSize());
     sysZoomOut();
+    help();
 }
 
 int getSize(){

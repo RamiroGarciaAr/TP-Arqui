@@ -3,5 +3,6 @@
 
 
 void openShell();
+void help();
 
 #endif //SHELL_H
