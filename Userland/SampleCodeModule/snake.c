@@ -411,20 +411,20 @@ void start_snake(){
     }
    
     //EXECUTE GAME
-    // if (c == '1')
-    // {
-    //      setup(1);
-    //     while (player[0].isAlive != 0)
-    //     {
-    //         drawFrame(1,0);
-    //         clearScreen(BACKBUFFER);
-    //         readControls();
-    //         playerMovement(0,1);
-    //         increase_score(0);
-    //     }
-    // }
-    // if (c == '2')
-    // {
+    if (c == '1')
+    {
+         setup(1);
+        while (player[0].isAlive != 0)
+        {
+            drawFrame(1,0);
+            clearScreen(BACKBUFFER);
+            readControls();
+            playerMovement(0,1);
+            increase_score(0);
+        }
+    }
+    if (c == '2')
+    {
         setup(2);
           while (player[0].isAlive != 0 && player[1].isAlive!=0 )
         {
@@ -441,7 +441,7 @@ void start_snake(){
             increase_score(1);
         }
         
-    //}
+    }
 
     
     if(player[0].isAlive == 0|| player[1].isAlive == 0){
