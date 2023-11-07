@@ -14,7 +14,8 @@ uint64_t blueColor =  0x0000FF;
 uint64_t grayColor = 0x808080;
 
 Apple apple;
-Player player;
+Player  player;
+//Player * player2;
 
 void start_snake();
 static void gameOverScreen();
@@ -24,7 +25,7 @@ static AxisPoint getRandomPoint();
 static void setup();
 static void readControls();
 static void drawSnake();
-static void deleteLast();
+
 static void moveUp();
 static void moveDown();
 static void moveLeft();
@@ -317,28 +318,60 @@ static void increase_score()
     }
 }
 
+void drawString(char *str,uint64_t color,int spacing,int x,int y,int size)
+{
+    for (int i=0;i<strlen(str);i++)
+    {
+        sysDrawCustomCharBack(str[i],color,x+(spacing*i),y, size);
+    }
+}
+
 void start_snake(){
     //Beginning the game
     menuScreen();
     sysVideoRefresh();
     char c;
     while((c = getchar()) != ' ');
-    setup();
-
-    //EXECUTE GAME
-    while (player.isAlive != 0)
+    
+    //EXECUTE MENU
+    while((c = getchar()) != '1')
     {
-        drawFrame();
+        c = getchar();
         clearScreen(BACKBUFFER);
-        readControls();
-        playerMovement();
-        increase_score();
+        //drawGamemodeMenu();
+        drawString("SELECT",whiteColor,25,300,200,3);
+        drawString("GAMEMODE",whiteColor,25,300,250,3);
+
+        drawString("1-Singleplayer",whiteColor,25,300,350,2);
+        drawString("2-Competitive",whiteColor,25,300,400,2);
+        sysVideoRefresh();
+
     }
+    setup();
+    //EXECUTE GAME
+    if (c == '1')
+    {
+        while (player.isAlive != 0)
+        {
+            drawFrame();
+            clearScreen(BACKBUFFER);
+            readControls();
+            playerMovement();
+            increase_score();
+        }
+    }
+    if (c == '2')
+    {
+        
+    }
+
     
     if(player.isAlive == 0){
         clearScreen(BACKBUFFER);
         //YOU LOST :C
-        gameOverScreen();
+        //gameOverScreen(); sysDrawCustomCharBack('G',whiteColor,SCREEN_WIDTH/2-200,50, 6);
+        drawString("GAME",whiteColor,50,SCREEN_WIDTH/2-100,SCREEN_HEIGHT/2 - 200,6);
+        drawString("OVER",whiteColor,50,SCREEN_WIDTH/2-100,SCREEN_HEIGHT/2 - 100,6);
         sysVideoRefresh();
 
         char end;
