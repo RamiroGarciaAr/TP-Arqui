@@ -14,23 +14,22 @@ uint64_t blueColor =  0x0000FF;
 uint64_t grayColor = 0x808080;
 
 Apple apple;
-Player  player1;
-Player  player2;
+Player player[2];
 
 void start_snake();
 static void gameOverScreen();
 static void menuScreen();
-static void drawFrame(int mode,Player player);
+static void drawFrame(int mode);
 static AxisPoint getRandomPoint();
 static void setup(int mode);
 static void readControls();
-static void drawSnake(Player player);
+static void drawSnake(int v);
 
-static void moveUp(Player player);
-static void moveDown(Player player);
-static void moveLeft(Player player);
-static void moveRight(Player player);
-static void eatApple(Player player);
+static void moveUp(int v);
+static void moveDown(int v);
+static void moveLeft(int v);
+static void moveRight(int v);
+static void eatApple(int v);
 void checkCollision(int movDir);
 static void borders();
 static void readControls2();
@@ -38,40 +37,40 @@ static void readControls2();
 int lastmoveDir1;
 int lastmoveDir2;
 
-static void setPlayerPosition(uint64_t startX,uint64_t startY,Player player)
+static void setPlayerPosition(uint64_t startX,uint64_t startY,int v)
 {
-    player.playerPos[0].x = startX;
-    player.playerPos[0].y = startY;
+    player[v].playerPos[0].x = startX;
+    player[v].playerPos[0].y = startY;
 
-    for (int i=1;i<player.currentSize;i++)
+    for (int i=1;i<player[v].currentSize;i++)
     {
-        player.playerPos[i].x = startX+DOT_SIZE*i;
-        player.playerPos[i].y = startY;
+        player[v].playerPos[i].x = startX+DOT_SIZE*i;
+        player[v].playerPos[i].y = startY;
     }
 }
 
 static void setup(int mode)
 {
     //Player set up
-    player1.points = 0;
-    player1.isAlive = 1;
-    player1.color = whiteColor;
-    player1.moveDir = 3; // <--
-    player1.currentSize = PLAYER_INIT_SIZE;
+    player[0].points = 0;
+    player[0].isAlive = 1;
+    player[0].color = whiteColor;
+    player[0].moveDir = 3; // <--
+    player[0].currentSize = PLAYER_INIT_SIZE;
 
     if(mode==2){
-    player2.points = 0;
-    player2.isAlive = 1;
-    player2.color = whiteColor;
-    player2.moveDir = 3; // <--
-    player2.currentSize = PLAYER_INIT_SIZE;
-    setPlayerPosition(SCREEN_WIDTH*0.25,SCREEN_HEIGHT/2,player1);
-    setPlayerPosition(SCREEN_WIDTH*0.75,SCREEN_HEIGHT/2,player2);
+    player[1].points = 0;
+    player[1].isAlive = 1;
+    player[1].color = whiteColor;
+    player[1].moveDir = 3; // <--
+    player[1].currentSize = PLAYER_INIT_SIZE;
+    setPlayerPosition(SCREEN_WIDTH*0.25,SCREEN_HEIGHT/2,0);
+    setPlayerPosition(SCREEN_WIDTH*0.75,SCREEN_HEIGHT/2,1);
     }
 
     
     if(mode==1){
-    setPlayerPosition(SCREEN_WIDTH/2,SCREEN_HEIGHT/2,player1);}
+    setPlayerPosition(SCREEN_WIDTH/2,SCREEN_HEIGHT/2,0);}
 
 
     //Apple setup
@@ -88,29 +87,29 @@ static void readControls()
 {
     char c;
     sysReadFromBuffer(&c);
-    lastmoveDir1 = player1.moveDir;
+    lastmoveDir1 = player[0].moveDir;
     switch (c)
     {
         case 'w':
-            if (player1.moveDir != 2)
-            player1.moveDir = 1;
+            if (player[0].moveDir != 2)
+            player[0].moveDir = 1;
             break;
         case 's':
-            if (player1.moveDir != 1)
-                player1.moveDir = 2;
+            if (player[0].moveDir != 1)
+                player[0].moveDir = 2;
             break;
         case 'd':
-            if (player1.moveDir != 3)
-                player1.moveDir = 4;
+            if (player[0].moveDir != 3)
+                player[0].moveDir = 4;
             break;
         case 'a':
-            if (player1.moveDir != 4)
-                player1.moveDir = 3;
+            if (player[0].moveDir != 4)
+                player[0].moveDir = 3;
             break;
         case ESC:
             sysPlayBeep();
             clearScreen(BACKBUFFER);
-            player1.isAlive =0;
+            player[0].isAlive =0;
             sysVideoRefresh();
             return;
     }
@@ -120,38 +119,38 @@ static void readControls2()
 {
     char c;
     sysReadFromBuffer(&c);
-    lastmoveDir2 = player2.moveDir;
+    lastmoveDir2 = player[1].moveDir;
     switch (c)
     {
         case 'i':
-            if (player2.moveDir != 2)
-            player2.moveDir = 1;
+            if (player[1].moveDir != 2)
+            player[1].moveDir = 1;
             break;
         case 'k':
-            if (player2.moveDir != 1)
-                player2.moveDir = 2;
+            if (player[1].moveDir != 1)
+                player[1].moveDir = 2;
             break;
         case 'l':
-            if (player2.moveDir != 3)
-                player2.moveDir = 4;
+            if (player[1].moveDir != 3)
+                player[1].moveDir = 4;
             break;
         case 'j':
-            if (player2.moveDir != 4)
-                player2.moveDir = 3;
+            if (player[1].moveDir != 4)
+                player[1].moveDir = 3;
             break;
         case ESC:
             sysPlayBeep();
             clearScreen(BACKBUFFER);
-            player2.isAlive =0;
+            player[1].isAlive =0;
             sysVideoRefresh();
             return;
     }
 }
 
 
-static void playerMovement(Player player,int mode)
+static void playerMovement(int v,int mode)
 {
-    int moveDir = player.moveDir;
+    int moveDir = player[v].moveDir;
     int lastmoveDir;
     if(mode==1){
          lastmoveDir = lastmoveDir1;
@@ -163,19 +162,19 @@ static void playerMovement(Player player,int mode)
     {
     case 1:
         if (lastmoveDir != 2)
-            moveUp(player);
+            moveUp(v);
         break;
     case 2:
         if (lastmoveDir != 1)
-            moveDown(player);
+            moveDown(v);
         break;
     case 3:
         if (lastmoveDir != 4)
-            moveLeft(player);
+            moveLeft(v);
         break;
     case 4:
         if (lastmoveDir != 3)
-            moveRight(player);
+            moveRight(v);
         break;
     default:
         break;
@@ -220,30 +219,33 @@ static void borders(){
 
 
 //draws game status
-static void drawFrame(int mode,Player player)
+static void drawFrame(int mode)
 {
     if(mode==1){
-    sysDrawCustomNumber(player1.points,grayColor, SCREEN_WIDTH/2,50, 6);}
+    sysDrawCustomNumber(player[0].points,grayColor, SCREEN_WIDTH/2,50, 6);}
     if(mode==2){
-        sysDrawCustomNumber(player1.points,grayColor, SCREEN_WIDTH*0.25,50, 6);
+        sysDrawCustomNumber(player[0].points,grayColor, SCREEN_WIDTH*0.25,50, 6);
+        sysDrawCustomNumber(player[1].points,grayColor, SCREEN_WIDTH*0.75,50, 6);
+        drawSnake(1);
     }
-    if(mode==3){
-        sysDrawCustomNumber(player2.points,grayColor, SCREEN_WIDTH*0.75,50, 6);
-    }
+    
+        
+    
     sysDrawFilledRect(redColor,apple.applePos.x, apple.applePos.y, apple.size, apple.size);
-
-    drawSnake(player);
+    
+    drawSnake(0);
+    
     borders();
     sysVideoRefresh(); //se imprime en pantalla
 }
 
 
-static void drawSnake(Player player)
+static void drawSnake(int v)
 {
     //Subject to change
-    for (int i =0;i<player.currentSize;i++)
+    for (int i =0;i<player[v].currentSize;i++)
     {
-        sysDrawFilledRect(whiteColor, player.playerPos[i].x - DOT_SIZE / 2, player.playerPos[i].y - DOT_SIZE / 2, DOT_SIZE, DOT_SIZE);
+        sysDrawFilledRect(whiteColor, player[v].playerPos[i].x - DOT_SIZE / 2, player[v].playerPos[i].y - DOT_SIZE / 2, DOT_SIZE, DOT_SIZE);
     }
 }
 
@@ -270,79 +272,79 @@ static void gameOverScreen()
     sysDrawCustomCharBack('E',whiteColor,SCREEN_WIDTH/2,200, 6);
     sysDrawCustomCharBack('R',whiteColor,SCREEN_WIDTH/2+100,200, 6);
 }
-static void updatePlayerTail(AxisPoint lastPosition,Player player)
+static void updatePlayerTail(AxisPoint lastPosition,int v)
 {
-    player.playerPos[1] = lastPosition;
-    for (int i=player.currentSize-1;i>1;i--)
+    player[v].playerPos[1] = lastPosition;
+    for (int i=player[v].currentSize-1;i>1;i--)
     {
-        player.playerPos[i] = player.playerPos[i-1];
+        player[v].playerPos[i] = player[v].playerPos[i-1];
     }
 
 }
 
-static void moveUp(Player player)
+static void moveUp(int v)
 {
-    if (validate(player.playerPos[0].x,player.playerPos[0].y-DOT_SIZE) != whiteColor)
+    if (validate(player[v].playerPos[0].x,player[v].playerPos[0].y-DOT_SIZE) != whiteColor)
     {
-        AxisPoint lastPostion = player.playerPos[0];
-        player.playerPos[0].y=player.playerPos[0].y - DOT_SIZE;
-        updatePlayerTail(lastPostion,player);
+        AxisPoint lastPostion = player[v].playerPos[0];
+        player[v].playerPos[0].y=player[v].playerPos[0].y - DOT_SIZE;
+        updatePlayerTail(lastPostion,v);
 
     }
     else    
     {
         sysPlayBeep();
         clearScreen(BACKBUFFER);
-        player.isAlive =0;
+        player[v].isAlive =0;
         sysVideoRefresh();
     } 
 }
-static void moveDown(Player player)
+static void moveDown(int v)
 {
-    if (validate(player.playerPos[0].x,player.playerPos[0].y+DOT_SIZE) != whiteColor)
+    if (validate(player[v].playerPos[0].x,player[v].playerPos[0].y+DOT_SIZE) != whiteColor)
     {
-        AxisPoint lastPostion = player.playerPos[0];
-        player.playerPos[0].y=player.playerPos[0].y + DOT_SIZE;
-        updatePlayerTail(lastPostion,player);
+        AxisPoint lastPostion = player[v].playerPos[0];
+        player[v].playerPos[0].y=player[v].playerPos[0].y + DOT_SIZE;
+        updatePlayerTail(lastPostion,v);
     }
     else
     {
             sysPlayBeep();
             clearScreen(BACKBUFFER);
-            player.isAlive =0;
+            player[v].isAlive =0;
             sysVideoRefresh();
     } 
 }
-static void moveLeft(Player player)
+static void moveLeft(int v)
 {
-    if (validate(player.playerPos[0].x - DOT_SIZE,player.playerPos[0].y) != whiteColor)
+    if (validate(player[v].playerPos[0].x - DOT_SIZE,player[v].playerPos[0].y) != whiteColor)
     {
-        AxisPoint lastPostion = player.playerPos[0];
-        player.playerPos[0].x=player.playerPos[0].x - DOT_SIZE;
-        updatePlayerTail(lastPostion,player);
+        AxisPoint lastPostion = player[v].playerPos[0];
+        player[v].playerPos[0].x=player[v].playerPos[0].x - DOT_SIZE;
+        updatePlayerTail(lastPostion,v);
     }
     else    
     {
         sysPlayBeep();
         clearScreen(BACKBUFFER);
-        player.isAlive =0;
+        player[v].isAlive =0;
         sysVideoRefresh();
     } 
 
 }
-static void moveRight(Player player)
+static void moveRight(int v)
 {
-    if (validate(player.playerPos[0].x + DOT_SIZE,player.playerPos[0].y) != whiteColor)
+    if (validate(player[v].playerPos[0].x + DOT_SIZE,player[v].playerPos[0].y) != whiteColor)
     {
-        AxisPoint lastPostion = player.playerPos[0];
-        player.playerPos[0].x=player.playerPos[0].x  + DOT_SIZE;
-        updatePlayerTail(lastPostion,player);
+        AxisPoint lastPostion = player[v].playerPos[0];
+        player[v].playerPos[0].x=player[v].playerPos[0].x  + DOT_SIZE;
+        updatePlayerTail(lastPostion,v);
     }
     else    
     {
         sysPlayBeep();
         clearScreen(BACKBUFFER);
-        player.isAlive =0;
+        player[v].isAlive =0;
         sysVideoRefresh();
     } 
 
@@ -358,23 +360,23 @@ static AxisPoint getRandomPoint()
     return point;
 }
 
-static void eatApple(Player player)
+static void eatApple(int v)
 {
-    player.currentSize++;
+    player[v].currentSize++;
     apple.applePos = getRandomPoint();
     //Increse Size
-    player.playerPos[player.currentSize].x = player.playerPos[player.currentSize-1].x + DOT_SIZE;
-    player.playerPos[player.currentSize].y = player.playerPos[player.currentSize-1].y;
+    player[v].playerPos[player[v].currentSize].x = player[v].playerPos[player[v].currentSize-1].x + DOT_SIZE;
+    player[v].playerPos[player[v].currentSize].y = player[v].playerPos[player[v].currentSize-1].y;
 
 }
 
 
-static void increase_score(Player player)
+static void increase_score(int v)
 {
-    if(validate(player.playerPos[0].x,player.playerPos[0].y) == redColor){
-        eatApple(player);
-        player.points++;
-        drawSnake(player);
+    if(validate(player[v].playerPos[0].x,player[v].playerPos[0].y) == redColor){
+        eatApple(v);
+        player[v].points++;
+        drawSnake(v);
     }
 }
 
@@ -409,40 +411,40 @@ void start_snake(){
     }
    
     //EXECUTE GAME
-    if (c == '1')
-    {
-         setup(1);
-        while (player1.isAlive != 0)
-        {
-            drawFrame(1,player1);
-            clearScreen(BACKBUFFER);
-            readControls();
-            playerMovement(player1,1);
-            increase_score(player1);
-        }
-    }
-    if (c == '2')
-    {
+    // if (c == '1')
+    // {
+    //      setup(1);
+    //     while (player[0].isAlive != 0)
+    //     {
+    //         drawFrame(1,0);
+    //         clearScreen(BACKBUFFER);
+    //         readControls();
+    //         playerMovement(0,1);
+    //         increase_score(0);
+    //     }
+    // }
+    // if (c == '2')
+    // {
         setup(2);
-          while (player1.isAlive != 0 && player2.isAlive!=0 )
+          while (player[0].isAlive != 0 && player[1].isAlive!=0 )
         {
-            drawFrame(2,player1);
+            drawFrame(2);
             clearScreen(BACKBUFFER);
             readControls();
-            playerMovement(player1,1);
-            increase_score(player1);
+            playerMovement(0,1);
+            increase_score(0);
 
-             drawFrame(3,player2);
-            clearScreen(BACKBUFFER);
+            
+            
             readControls2();
-            playerMovement(player2,2);
-            increase_score(player2);
+            playerMovement(1,2);
+            increase_score(1);
         }
         
-    }
+    //}
 
     
-    if(player1.isAlive == 0|| player2.isAlive == 0){
+    if(player[0].isAlive == 0|| player[1].isAlive == 0){
         clearScreen(BACKBUFFER);
         //YOU LOST :C
         //gameOverScreen(); sysDrawCustomCharBack('G',whiteColor,SCREEN_WIDTH/2-200,50, 6);
