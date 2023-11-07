@@ -19,6 +19,7 @@ GLOBAL sysGetPtrToPixel
 GLOBAL sysZoomIn
 GLOBAL sysZoomOut
 GLOBAL sysGetSize
+GLOBAL sysDrawCustomNumber
 
 
 ;no se pushea rax para mantener el valor de retorno
@@ -122,3 +123,6 @@ sysZoomOut:
 
 sysGetSize:
 	makeSysCall 17
+
+sysDrawCustomNumber
+	makeSysCall 18

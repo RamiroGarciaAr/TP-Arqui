@@ -22,5 +22,6 @@ extern uint64_t sysGetPtrToPixel(uint64_t x, uint64_t y, uint64_t* color);
 extern uint64_t sysZoomIn();
 extern uint64_t sysZoomOut();
 extern uint64_t sysGetSize();
+extern uint64_t sysDrawCustomNumber(int num, uint64_t color, uint64_t x, uint64_t y, uint64_t size);
 
 #endif //SYSCALLSMANAGER_H

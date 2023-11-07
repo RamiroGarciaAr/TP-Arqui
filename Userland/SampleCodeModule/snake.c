@@ -169,7 +169,7 @@ static void borders(){
 //draws game status
 static void drawFrame()
 {
-    sysDrawCustomCharBack(player.points +'0',grayColor, SCREEN_WIDTH/2,50, 6);
+    sysDrawCustomNumber(player.points,grayColor, SCREEN_WIDTH/2,50, 6);
     sysDrawFilledRect(redColor,apple.applePos.x, apple.applePos.y, apple.size, apple.size);
     drawSnake();
     borders();

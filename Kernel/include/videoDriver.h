@@ -60,6 +60,8 @@ void drawFilledRectangle(Color color, uint32_t x, uint32_t y, uint32_t width, ui
 //funcion utilizada para imprimir un caracter en el backBuffer con un color, tamaño (entero) y posicion definidos
 void drawCustomCharBack(char c, Color color, uint64_t x, uint64_t y, uint64_t size);
 
+void drawCustomNumber(int num, Color color, uint64_t x, uint64_t y, uint64_t size);
+
 Color* videoGetPtrToPixel(uint64_t x, uint64_t y);
 
 #endif //VIDEODRIVER_H

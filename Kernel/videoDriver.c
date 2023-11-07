@@ -192,6 +192,16 @@ void drawCustomCharBack(char c, Color color, uint64_t x, uint64_t y, uint64_t si
     }
 }
 
+void drawCustomNumber(int num, Color color, uint64_t x, uint64_t y, uint64_t size){
+    if(num>= 0 && num <= 9){
+        drawCustomCharBack(num + '0', color, x,y,size);
+    }
+    else{
+        drawCustomCharBack(num/10 + '0', color, x-50,y,size);
+        drawCustomCharBack(num%10 + '0', color,x,y,size);
+    }
+}
+
 void drawFilledRectangle(Color color, uint32_t x, uint32_t y, uint32_t width, uint32_t height){
     if(x>=getScreenWidth()||y>=getScreenHeight()) {
         return;

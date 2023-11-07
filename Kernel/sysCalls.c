@@ -131,7 +131,7 @@ uint64_t getSize(uint64_t empty1, uint64_t empty2, uint64_t empty3, uint64_t emp
 
 //se estandariza el prototipo de las funciones que atienden system calls a 5 parametros
 static uint64_t (*syscalls[])(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t r10, uint64_t r8) =
-        {read, readCharFromBuffer, write,customWrite, setCursorPosition,getCurrentTime, getScrWidth, getScrHeight, drawFilledRect, dottedLine, videoRefresh, clearScreen, playBeep, drawVideoChar, getPtrToPixel,zoomIn,zoomOut,getSize};
+        {read, readCharFromBuffer, write,customWrite, setCursorPosition,getCurrentTime, getScrWidth, getScrHeight, drawFilledRect, dottedLine, videoRefresh, clearScreen, playBeep, drawVideoChar, getPtrToPixel,zoomIn,zoomOut,getSize,drawCustomNumber};
 
 uint64_t syscallHandler(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t r10, uint64_t r8, uint64_t r9) {
     if (r9 < (sizeof(syscalls)/sizeof(syscalls[0])) && syscalls[r9] != 0) {
