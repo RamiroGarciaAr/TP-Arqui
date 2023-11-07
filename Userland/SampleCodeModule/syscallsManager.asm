@@ -15,6 +15,7 @@ GLOBAL sysDrawFilledRect
 GLOBAL sysVideoRefresh
 GLOBAL sysClearScreen
 GLOBAL sysPlayBeep
+GLOBAL call_changeSize
 
 ;no se pushea rax para mantener el valor de retorno
 %macro pushState 0
@@ -105,4 +106,6 @@ sysPlayBeep:
 
 sysDrawCustomCharBack:
     makeSysCall 13
+call_changeSize:
+	makeSysCall 14
 

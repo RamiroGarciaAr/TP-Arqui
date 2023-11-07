@@ -49,6 +49,7 @@ void refreshVideo();
 void drawFilledRectangle(Color color, uint32_t x, uint32_t y, uint32_t width, uint32_t height);
 
 //funcion utilizada para imprimir un caracter en el backBuffer con un color, tamaño (entero) y posicion definidos
-void drawCustomCharBack(char c, Color color, uint64_t x, uint64_t y, uint64_t size);
+void drawCustomCharBack(char c, Color color, uint64_t x, uint64_t y);
+void changeSize(uint64_t newSize);
 
 #endif //VIDEODRIVER_H

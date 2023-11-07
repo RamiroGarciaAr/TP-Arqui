@@ -16,6 +16,7 @@ extern uint64_t sysDottedLine(uint32_t color);
 extern uint64_t sysVideoRefresh();
 extern uint64_t sysClearScreen(uint64_t mode);
 extern uint64_t sysPlayBeep();
-extern uint64_t sysDrawCustomCharBack(char c, uint64_t color, uint64_t x, uint64_t y, uint64_t size);
+extern uint64_t sysDrawCustomCharBack(char c, uint64_t color, uint64_t x, uint64_t y);
 extern uint64_t sysReadFromBuffer(const char * buf);
+extern void call_changeSize(uint64_t newSize);
 #endif //SYSCALLSMANAGER_H

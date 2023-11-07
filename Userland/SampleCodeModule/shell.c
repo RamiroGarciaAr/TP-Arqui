@@ -6,7 +6,7 @@
 
 #define EXIT_KEY 27
 #define REGS_KEY 29
-#define MAXSIZE 15
+#define MAXSIZE 17
 #define CANTREGS 18
 #define CHARHEIGHT 16
 #define CHARWIDTH 8
@@ -39,6 +39,9 @@ static void printRegisters();
 static void printCurrentTime();
 static void help();
 static void uint64ToHex(uint64_t n, char buf[16]);
+void decSize();
+void incSize();
+extern void call_changeSize(uint64_t newSize);
 
 uint32_t blue = 0x0000FF;
 uint32_t red = 0xFF0000;
@@ -136,7 +139,7 @@ static void setNewInstruction( void (*fn)(void), char * instructionName, char * 
 
 static void setInstructions(){
     //seteamos todas las funciones que se pueden llamar desde la shell
-    setNewInstruction(&start_game, "pong", "                   starts the game \'pong\' in full-screen, to close the game press ESC, the keys to control de padles are:\
+    //setNewInstruction(&start_game, "pong", "                   starts the game \'pong\' in full-screen, to close the game press ESC, the keys to control de padles are:\
                                                           Player1: UP: \'w\' | DOWN: \'s\' || Player2: UP: \'i\' | DOWN: \'k\'");
     setNewInstruction(&testException0,  "generateException0", "     runs a test to show the exceptionHandler for exception0: zerodivision");
     setNewInstruction(&testException6,  "generateException6", "     runs a test to show the exceptionHandler for exception6: invalidop");
@@ -144,6 +147,8 @@ static void setInstructions(){
                                                           then use this instruction to obtain their values");
     setNewInstruction(&printCurrentTime,"printTime", "              prints the current time, using the format: HH:MM:SS");
     setNewInstruction(&help,"help", "                   prints the whole set of instructions available to you with a short description of them");
+    setNewInstruction(&incSize, "incSize", "                increases the size of the window by 1 pixel");
+    setNewInstruction(&decSize, "decSize", "                decreases the size of the window by 1 pixel");
 }
 
 static void help(){
@@ -200,4 +205,11 @@ static void printCurrentTime(){
     char currentTime[9];
     getTime(currentTime);
     println(currentTime);
+}
+
+void incSize(){
+    call_changeSize(1);
+}
+void decSize(){
+    call_changeSize(-1);
 }

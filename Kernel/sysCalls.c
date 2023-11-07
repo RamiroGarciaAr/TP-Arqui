@@ -99,8 +99,8 @@ uint64_t playBeep(uint64_t empty1, uint64_t empty2, uint64_t empty3, uint64_t em
     return 0;
 }
 
-uint64_t drawVideoChar(char character, uint32_t color, uint64_t x, uint64_t y, uint64_t size){
-    drawCustomCharBack(character, convertHexatoColor(color), x, y, size);
+uint64_t drawVideoChar(char character, uint32_t color, uint64_t x, uint64_t y){
+    drawCustomCharBack(character, convertHexatoColor(color), x, y);
     return 0;
 }
 //se estandariza el prototipo de las funciones que atienden system calls a 5 parametros

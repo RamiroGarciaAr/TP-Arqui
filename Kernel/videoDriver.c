@@ -2,6 +2,7 @@
 #include <screenDriver.h>
 #include <stdint.h>
 #include <chars.h>
+ uint64_t size=5;
 
 struct vbe_mode_info_structure {
 	uint16_t attributes;		// deprecated, only bit 7 should be of interest to you, and it indicates the mode supports a linear frame buffer.
@@ -157,7 +158,7 @@ void drawConsoleCharacter(char c, Color color) {
     }
 }
 
-void drawCustomCharBack(char c, Color color, uint64_t x, uint64_t y, uint64_t size) {
+void drawCustomCharBack(char c, Color color, uint64_t x, uint64_t y) {
     int digit = c - LOWEST_CHAR;
 
     int startX = x;
@@ -194,4 +195,8 @@ void drawFilledRectangle(Color color, uint32_t x, uint32_t y, uint32_t width, ui
             drawPixelBack(color,x+i,y+j);
         }
     }
+}
+
+void changeSize(uint64_t newSize){
+    size += newSize;
 }
