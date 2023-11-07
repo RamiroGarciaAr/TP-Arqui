@@ -240,12 +240,12 @@ static void drawFrame(int mode)
 }
 
 
-static void drawSnake(int v)
+static void drawSnake(int v, uint64_t color)
 {
     //Subject to change
     for (int i =0;i<player[v].currentSize;i++)
     {
-        sysDrawFilledRect(whiteColor, player[v].playerPos[i].x - DOT_SIZE / 2, player[v].playerPos[i].y - DOT_SIZE / 2, DOT_SIZE, DOT_SIZE);
+        sysDrawFilledRect(color, player[v].playerPos[i].x - DOT_SIZE / 2, player[v].playerPos[i].y - DOT_SIZE / 2, DOT_SIZE, DOT_SIZE);
     }
 }
 
@@ -396,7 +396,7 @@ void start_snake(){
     while((c = getchar()) != ' ');
     
     //EXECUTE MENU
-    while((c = getchar()) != '1')
+    while((c = getchar()) != '2')
     {
         c = getchar();
         clearScreen(BACKBUFFER);
@@ -416,7 +416,7 @@ void start_snake(){
          setup(1);
         while (player[0].isAlive != 0)
         {
-            drawFrame(1,0);
+            drawFrame(1);
             clearScreen(BACKBUFFER);
             readControls();
             playerMovement(0,1);
