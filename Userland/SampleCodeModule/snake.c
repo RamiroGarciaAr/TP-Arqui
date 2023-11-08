@@ -240,12 +240,12 @@ static void drawFrame(int mode)
 }
 
 
-static void drawSnake(int v, uint64_t color)
+static void drawSnake(int v)
 {
     //Subject to change
     for (int i =0;i<player[v].currentSize;i++)
     {
-        sysDrawFilledRect(color, player[v].playerPos[i].x - DOT_SIZE / 2, player[v].playerPos[i].y - DOT_SIZE / 2, DOT_SIZE, DOT_SIZE);
+        sysDrawFilledRect(whiteColor, player[v].playerPos[i].x - DOT_SIZE / 2, player[v].playerPos[i].y - DOT_SIZE / 2, DOT_SIZE, DOT_SIZE);
     }
 }
 
@@ -396,7 +396,7 @@ void start_snake(){
     while((c = getchar()) != ' ');
     
     //EXECUTE MENU
-    while((c = getchar()) != '2')
+    do
     {
         c = getchar();
         clearScreen(BACKBUFFER);
@@ -408,40 +408,40 @@ void start_snake(){
         drawString("2-Competitive",whiteColor,25,300,400,2);
         sysVideoRefresh();
 
-    }
-   
-    //EXECUTE GAME
-    if (c == '1')
-    {
-         setup(1);
-        while (player[0].isAlive != 0)
-        {
-            drawFrame(1);
-            clearScreen(BACKBUFFER);
-            readControls();
-            playerMovement(0,1);
-            increase_score(0);
+            switch (c) {
+            case '1':
+                setup(1);
+                while (player[0].isAlive != 0)
+                {
+                    drawFrame(1);
+                    clearScreen(BACKBUFFER);
+                    readControls();
+                    playerMovement(0,1);
+                    increase_score(0);
+                }
+                break;
+            case '2':
+                    setup(2);
+                    while (player[0].isAlive != 0 && player[1].isAlive!=0 )
+                    {
+                        drawFrame(2);
+                        clearScreen(BACKBUFFER);
+                        readControls();
+                        playerMovement(0,1);
+                        increase_score(0);
+            
+                        readControls2();
+                        playerMovement(1,2);
+                        increase_score(1);
+                    }
+                    break;
+            default:
+                break;
         }
-    }
-    if (c == '2')
-    {
-        setup(2);
-          while (player[0].isAlive != 0 && player[1].isAlive!=0 )
-        {
-            drawFrame(2);
-            clearScreen(BACKBUFFER);
-            readControls();
-            playerMovement(0,1);
-            increase_score(0);
 
-            
-            
-            readControls2();
-            playerMovement(1,2);
-            increase_score(1);
-        }
         
-    }
+    } 
+    while (c != '1' && c != '2');
 
     
     if(player[0].isAlive == 0|| player[1].isAlive == 0){
