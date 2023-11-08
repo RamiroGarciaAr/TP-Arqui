@@ -17,11 +17,17 @@ unsigned  int seconds(){
 }
 
 unsigned int minutes(){
-    return decode(clock(MINUTES));
+    int m = decode(clock(MINUTES));
+    if (m<0) m+=60;
+    return m;
 }
 
 //se acomoda el valor a la zona horaria
 unsigned int hours(){
-    return decode(clock(HOURS)) + TIME_ZONE;
+    
+    int h = decode(clock(HOURS)) + TIME_ZONE;
+    if(h<0) h += 24;
+    return h;
+
 }
 

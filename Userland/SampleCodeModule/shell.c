@@ -200,7 +200,7 @@ static void printRegisters(){
 }
 
 static void printCurrentTime(){
-    char currentTime[9];
+    char currentTime[14];
     getTime(currentTime);
     println(currentTime);
 }

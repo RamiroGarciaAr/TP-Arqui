@@ -164,7 +164,8 @@ void getTime(char * timeBuff) {
     char * p = timeBuff;
     uint64_t time = sysGetTime();
     uint64_t hours = time & 0xFF;
-    if (hours < 10){
+    if (hours < 10)
+    {
         p[0] = '0';
         uintToBase(hours,p+1, 10);
     }
