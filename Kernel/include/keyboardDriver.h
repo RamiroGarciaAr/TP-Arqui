@@ -33,5 +33,6 @@ char consumeKeyFromBuffer();
 
 //se hace una limpieza de buffer
 void clearKeyboardBuffer();
+void getAllKeys(char * c);
 
 #endif

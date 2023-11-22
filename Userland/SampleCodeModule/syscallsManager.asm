@@ -20,6 +20,7 @@ GLOBAL sysZoomIn
 GLOBAL sysZoomOut
 GLOBAL sysGetSize
 GLOBAL sysDrawCustomNumber
+GLOBAL sysCurrentKeyPressed
 
 
 ;no se pushea rax para mantener el valor de retorno
@@ -124,5 +125,7 @@ sysZoomOut:
 sysGetSize:
 	makeSysCall 17
 
-sysDrawCustomNumber
+sysDrawCustomNumber:
 	makeSysCall 18
+sysCurrentKeyPressed:
+	makeSysCall 19

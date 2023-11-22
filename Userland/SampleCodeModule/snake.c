@@ -15,6 +15,8 @@ uint64_t grayColor = 0x808080;
 
 Apple apple;
 Player player[2];
+int keypressed=0;
+int keypressed2=0;
 
 void start_snake();
 static void gameOverScreen();
@@ -22,7 +24,7 @@ static void menuScreen();
 static void drawFrame(int mode);
 static AxisPoint getRandomPoint();
 static void setup(int mode);
-static void readControls();
+static void readControls(char c);
 static void drawSnake(int v);
 
 static void moveUp(int v);
@@ -32,7 +34,7 @@ static void moveRight(int v);
 static void eatApple(int v);
 void checkCollision(int movDir);
 static void borders();
-static void readControls2();
+static void readControls2(char c);
 
 int lastmoveDir1;
 int lastmoveDir2;
@@ -82,11 +84,12 @@ static void setup(int mode)
 
 
 
+
 //Reads Player Inputs
-static void readControls()
+static void readControls(char c)
 {
-    char c;
-    sysReadFromBuffer(&c);
+   // char c;
+   // sysReadFromBuffer(&c);
     lastmoveDir1 = player[0].moveDir;
     switch (c)
     {
@@ -115,10 +118,10 @@ static void readControls()
     }
 }
 
-static void readControls2()
+static void readControls2(char c)
 {
-    char c;
-    sysReadFromBuffer(&c);
+   // char c;
+   // sysReadFromBuffer(&c);
     lastmoveDir2 = player[1].moveDir;
     switch (c)
     {
@@ -411,37 +414,113 @@ void start_snake(){
             switch (c) {
             case '1':
                 setup(1);
+                char keys[10];
                 while (player[0].isAlive != 0)
                 {
                     drawFrame(1);
                     clearScreen(BACKBUFFER);
-                    readControls();
-                    playerMovement(0,1);
-                    increase_score(0);
+                    sysCurrentKeyPressed(keys);
+                    for(int i=0;keys[i];i++){
+                        if(!keypressed){
+                            keypressed=1;
+                        readControls( keys[i]);
+                        playerMovement(0,1);
+                        increase_score(0);
+                        
+                       }
+                        
+                         for(int a=0;a<500;a++){
+
+                    }
+                    
+                    }
+                   
+                   
+                    keypressed=0;
                 }
                 break;
             case '2':
+                    // setup(2);
+                 
+                    // char m='m',n='n';
+                    // while (player[0].isAlive != 0 && player[1].isAlive!=0 )
+                    // {
+                    //     drawFrame(2);
+                    //     clearScreen(BACKBUFFER);
+                    //     sysCurrentKeyPressed(keys);
+                    //      for(int i=0;keys[i];i++){
+                    //         if(!keypressed){
+                    //         keypressed=1;
+                    //      readControls(keys[i]);
+                    //     playerMovement(1,2);
+                    //     increase_score(1);
+                    //     }
+                    //     } 
+                    //   for(int j=0;keys[j];j++){
+                    //     if(!keypressed2){
+                    //         keypressed2=1;
+                    //     readControls2(keys[j]);
+                    //     playerMovement(0,1);
+                    //     increase_score(0);}
+                         
+                    // }
+                    // int s=0;
+                    // while(s<500){
+                    //     s++;
+                    // }
+                    //  keypressed=0;
+                    // keypressed2=0;
+                    // }
+                    // break;
                     setup(2);
-                    while (player[0].isAlive != 0 && player[1].isAlive!=0 )
-                    {
-                        drawFrame(2);
-                        clearScreen(BACKBUFFER);
-                        readControls();
-                        playerMovement(0,1);
-                        increase_score(0);
-            
-                        readControls2();
-                        playerMovement(1,2);
-                        increase_score(1);
-                    }
-                    break;
+
+
+while (player[0].isAlive != 0 && player[1].isAlive != 0) {
+  drawFrame(2);
+  clearScreen(BACKBUFFER);
+  sysCurrentKeyPressed(keys);
+
+  // Process key presses for player 1
+  if (!keypressed) {
+    keypressed = 1;
+    for (int i = 0; keys[i]; i++) {
+      readControls(keys[i]);
+    }
+    playerMovement(1, 2);
+    increase_score(1);
+  }
+
+  // Process key presses for player 2
+  if (!keypressed2) {
+    keypressed2 = 1;
+    for (int j = 0; keys[j]; j++) {
+      readControls2(keys[j]);
+    }
+    playerMovement(0, 1);
+    increase_score(0);
+  }
+
+
+
+  // Add a short delay to avoid excessive processing
+  int s = 0;
+  while (s < 500) {
+    s++;
+  }
+
+  // Reset keypressed flags
+  keypressed = 0;
+  keypressed2 = 0;
+}
+break;
+
             default:
                 break;
         }
 
         
     } 
-    while (c != '1' && c != '2');
+      while (c != '1' && c != '2');
 
     
     if(player[0].isAlive == 0|| player[1].isAlive == 0){

@@ -165,3 +165,24 @@ static int isSpecialCharacter(int scancode){
     }
 	return 0; //No era un char especial
 }
+// void getAllKeys(char * c) {
+//     for (int i = 0; i < bufferSize; i++) {
+//         c[i] = consumeKeyFromBuffer();
+//     }
+//     c[bufferSize] = 0;
+// }
+void getAllKeys(char*c) {
+    // Verifica si el buffer no está vacío
+    if (!isBufferEmpty()) {
+        // Imprime el contenido del buffer en la pantalla
+        for (int i = 0; i < bufferSize; i++) {
+           c[i]=keyboardBuffer[i];  // Reemplaza 'printChar' con la función que utilizas para imprimir caracteres en la pantalla
+        }
+
+        // Agrega un salto de línea al final
+
+        // Limpia el buffer después de imprimirlo en la pantalla
+        clearKeyboardBuffer();
+    }
+}
+
