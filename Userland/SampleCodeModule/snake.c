@@ -101,7 +101,7 @@ static void readControls()
         case 'd':
             if (player[0].moveDir != 3)
                 player[0].moveDir = 4;
-            break;
+            break;z|
         case 'a':
             if (player[0].moveDir != 4)
                 player[0].moveDir = 3;
